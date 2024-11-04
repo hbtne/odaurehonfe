@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Navbar from './components/Navbar/Navbar';
 import MainScreenCus from './screens/Customer/main/mainScreen_Cus'; // Import the component correctly
-import SearchRouteScreen from './screens/Customer/booking/cusbookingScreen'
+import SearchRouteScreen from './screens/Customer/booking/searchScreen'
 function App() {
   return (
     <div className="App">

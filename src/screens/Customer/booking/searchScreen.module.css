@@ -448,3 +448,129 @@ color: #D7987D;
     margin-top: -40px;
     margin-left: 140px;
 }
+
+.bg
+{
+    /* Ellipse 1 */
+
+position: absolute;
+width: 789px;
+height: 508px;
+left: -61px;
+top: 669px;
+
+background: conic-gradient(from 180deg at 50% 50%, #FFFFFF -60.57deg, #FFFFFF 7.7deg, #92C3BE 126.1deg, #F9DED4 249.34deg, #FFFFFF 299.43deg, #FFFFFF 367.7deg);
+filter: blur(100px);
+
+    z-index: -40;
+}
+
+.bg2
+{
+    /* Ellipse 2 */
+
+position: absolute;
+width: 1268px;
+height: 668px;
+left: 149px;
+top: 1457px;
+
+background: conic-gradient(from 180deg at 50% 50%, #F9DED4 -28.94deg, rgba(215, 152, 125, 0.41) 54.41deg, #FFFFFF 117.54deg, #FFFFFF 174.65deg, rgba(146, 195, 190, 0.59) 229.53deg, #F9DED4 331.06deg, rgba(215, 152, 125, 0.41) 414.41deg);
+filter: blur(100px);
+border-radius: 295.5px;
+z-index: -40;
+}
+
+.titleLoc
+{
+    /* Lọc */
+
+position: absolute;
+width: 50px;
+height: 31px;
+left: 29px;
+top: 932px;
+
+/* H4 */
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 800;
+font-size: 28px;
+line-height: 110%;
+/* identical to box height, or 31px */
+
+color: #000000;
+
+
+}
+.tilteTenchuyen
+{
+    /* TP. Hồ Chí Minh - Thốt Nốt */
+
+position: absolute;
+width: 382px;
+height: 31px;
+left: 380px;
+top: 935px;
+
+/* H4 */
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 800;
+font-size: 28px;
+line-height: 110%;
+/* identical to box height, or 31px */
+
+color: #000000;
+
+
+}
+.labelcheckboxx1
+{
+    display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+position: absolute;
+width: 151px;
+height: 33px;
+left: 963px;
+top: 941px;
+}
+.labelcheckboxx2
+{
+    /* Frame 20 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+position: absolute;
+width: 155px;
+height: 33px;
+left: 1165px;
+top: 941px;
+
+
+}
+.checkbox1
+{
+    /* Frame 19 */
+
+/* Auto layout */
+/* Rectangle 7 */
+
+box-sizing: border-box;
+
+background: #FFFFFF;
+/* C5 */
+border: 2px solid #D7987D;
+border-radius: 30px;
+
+
+}

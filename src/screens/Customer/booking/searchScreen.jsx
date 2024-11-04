@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
-import styles from './cusbookingScreen.module.css';
+import { Box, Typography } from '@mui/material';
+import styles from './searchScreen.module.css';
 import CarDriver from '../../../assets/img/carDriver.svg';
 import IOSSwitch from '../../../components/switch.jsx';
 import SwapIcon from '../../../assets/icons/swap-icon.js'; 
@@ -121,7 +121,10 @@ const SearchScreen = () => {
             </Box>
             
          
-           
+           <Typography className={styles.titleLoc}> Lọc </Typography>
+           <Typography className={styles.tilteTenchuyen}> TP. Hồ Chí Minh - Thốt Nốt </Typography>
+           <label className={styles.labelcheckboxx1}><input type="checkbox" color="#D7987D" className={styles.checkBox1}/> Chuyến đi</label>
+           <label className={styles.labelcheckboxx2}><input type="checkbox" color="#D7987D" className={styles.checkBox1}/> Chuyến về</label>
                 <div className={styles.timeRangeContainer}>
                     <div className={styles.timeRangeHeader}>Khung thời gian</div>
                     <label><input type="checkbox" /> 0:00 - 6:00</label>
@@ -157,6 +160,8 @@ const SearchScreen = () => {
                     </div>
                 ))}
         </div>
+        <div className={styles.bg}/>
+<div className={styles.bg2}/>
         </div>
      
     );
