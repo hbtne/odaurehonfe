@@ -32,9 +32,9 @@ const ChooseSeatScreen1way = () => {
   return (
     <div className={styles.container}>
       <Box className={styles.backIcon}><ArrowBackIosIcon/></Box>
-      <Typography className={styles.texttilte}>TP. Hồ Chí Minh - Thốt Nốt</Typography>
-      <Typography className={styles.title1}>Tầng dưới</Typography>
-      <Typography className={styles.title2}>Tầng trên</Typography>
+      <div className={styles.texttilte}><h4>TP. Hồ Chí Minh - Thốt Nốt</h4></div>
+      <div className={styles.title1}>Tầng dưới</div>
+      <div className={styles.title2}>Tầng trên</div>
       <Box className={styles.seatLayout}>
         <Box></Box>
        
