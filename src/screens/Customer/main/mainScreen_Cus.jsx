@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Input, Button } from '@mui/material';
+import { Box, Input, Button } from '@mui/material';
 import styles from './mainScreen_Cus.module.css';
 import CarDriver from '../../../assets/img/carDriver.svg';
 import IOSSwitch from '../../../components/switch.jsx';
@@ -109,40 +109,40 @@ const MainScreenCus = () => {
 <img src={CarStand} alt="standing car" className={styles.img2} />
 <Box className={styles.Fram121}>
     <Box className={styles.frame118}>
-        <Typography className={styles.text20000}>Hơn 20000 lượt đi</Typography>
-        <Typography className={styles.textnhanduochon}>odaurehon nhận được hơn 20000 lượt đi trong năm 2023</Typography>
+        <div className={styles.text20000}>Hơn 20000 lượt đi</div>
+        <div className={styles.textnhanduochon}>odaurehon nhận được hơn 20000 lượt đi trong năm 2023</div>
     </Box>
     <Box className={styles.frame119}>
-        <Typography className={styles.text350}>Hơn 350 trạm</Typography>
-        <Typography className={styles.texttannoi}>odaurehon có hơn 350 trạm, nơi đón khắp cả nước giúp khách hàng đến được tận nơi họ cần</Typography>
+        <div className={styles.text350}>Hơn 350 trạm</div>
+        <div className={styles.texttannoi}>odaurehon có hơn 350 trạm, nơi đón khắp cả nước giúp khách hàng đến được tận nơi họ cần</div>
     </Box>
     <Box className={styles.frame120}>
-        <Typography className={styles.text1000}>Hơn 1000 chuyến xe</Typography>
-        <Typography className={styles.textchuyenxe}>odaurehon có hơn 1000 chuyến xe chạy mỗi ngày trong tuần</Typography>
+        <div className={styles.text1000}>Hơn 1000 chuyến xe</div>
+        <div className={styles.textchuyenxe}>odaurehon có hơn 1000 chuyến xe chạy mỗi ngày trong tuần</div>
     </Box>
 </Box>
 </Box>
 </Box>
 <Box className={styles.frame117}>
     <div className={styles.line}></div>
-    <Typography className={styles.textLienhe}>LIÊN HỆ VỚI CHÚNG TÔI</Typography>
+    <div className={styles.textLienhe}>LIÊN HỆ VỚI CHÚNG TÔI</div>
     <Box className={styles.frame116}>
         <Box className={styles.frame115}>
     <Box className={styles.frame45}>
-    <Typography className={styles.textHoten}>Họ và tên</Typography>
+    <div className={styles.textHoten}>Họ và tên</div>
         <Input className={styles.boxinputHoten} variant="plain" placeholder="Nguyen Van A"  />
         </Box>
         <Box className={styles.frame46}>
-    <Typography className={styles.textsdt}>Số điện thoại</Typography>
+    <div className={styles.textsdt}>Số điện thoại</div>
         <Input className={styles.boxinputsdt} variant="plain" placeholder="0XX XXX XXXX"  />
         </Box>
         </Box>
         <Box className={styles.frame47}>
-    <Typography className={styles.textEmail}>Email</Typography>
+    <div className={styles.textEmail}>Email</div>
         <Input className={styles.boxinputemail} variant="plain" placeholder="abc@gmail.com"  />
         </Box>
         <Box className={styles.frame228}>
-            <Typography className={styles.textndlienhe}>Nội dung</Typography>
+            <div className={styles.textndlienhe}>Nội dung</div>
             <Input className={styles.boxinputndlh}/>
             <Button className={styles.buttongui}>Gửi</Button>
         </Box>

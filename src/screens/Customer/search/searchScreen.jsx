@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box} from '@mui/material';
 import styles from './searchScreen.module.css';
 import CarDriver from '../../../assets/img/carDriver.svg';
 import IOSSwitch from '../../../components/switch.jsx';
@@ -121,8 +121,8 @@ const SearchScreen = () => {
             </Box>
             
          
-           <Typography className={styles.titleLoc}> Lọc </Typography>
-           <Typography className={styles.tilteTenchuyen}> TP. Hồ Chí Minh - Thốt Nốt </Typography>
+           <div className={styles.titleLoc}> Lọc </div>
+           <div className={styles.tilteTenchuyen}> TP. Hồ Chí Minh - Thốt Nốt </div>
            <label className={styles.labelcheckboxx1}><input type="checkbox" color="#D7987D" className={styles.checkBox1}/> Chuyến đi</label>
            <label className={styles.labelcheckboxx2}><input type="checkbox" color="#D7987D" className={styles.checkBox1}/> Chuyến về</label>
                 <div className={styles.timeRangeContainer}>

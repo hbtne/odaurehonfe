@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './chooseSeatScreen1way.module.css';
-import { Box, Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 const ChooseSeatScreen1way = () => {
   const seatRows = [
@@ -31,7 +31,7 @@ const ChooseSeatScreen1way = () => {
 
   return (
     <div className={styles.container}>
-      <Box className={styles.backIcon}><ArrowBackIosIcon/></Box>
+      <Button className={styles.backIcon}><ArrowBackIosIcon/></Button>
       <div className={styles.texttilte}><h4>TP. Hồ Chí Minh - Thốt Nốt</h4></div>
       <div className={styles.title1}>Tầng dưới</div>
       <div className={styles.title2}>Tầng trên</div>
