@@ -144,7 +144,7 @@ const MainScreenCus = () => {
         <Box className={styles.frame228}>
             <div className={styles.textndlienhe}>Nội dung</div>
             <Input className={styles.boxinputndlh}/>
-            <Button className={styles.buttongui}>Gửi</Button>
+            <div className={styles.buttongui}><Button><div className={styles.textbut}>Gửi</div></Button></div>
         </Box>
     </Box>
 </Box>

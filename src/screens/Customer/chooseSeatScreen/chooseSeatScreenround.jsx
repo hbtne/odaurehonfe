@@ -41,7 +41,7 @@ const ChooseSeatScreenRound = () => {
   return (
     <div className={styles.container}>
       <div className={styles.container1}>
-      <Button className={styles.backIcon}><ArrowBackIosIcon/></Button>
+      <div className={styles.backIcon}><Button><ArrowBackIosIcon/></Button></div>
       <div className={styles.texttilte}><h4>TP. Hồ Chí Minh - Thốt Nốt</h4></div>
       <div className={styles.title1}>Tầng dưới</div>
       <div className={styles.title2}>Tầng trên</div>
@@ -95,7 +95,6 @@ const ChooseSeatScreenRound = () => {
       <button className={styles.bookButton}>Đặt vé</button>
     </div>
     <div className={styles.container2}>
-      <Box className={styles.backIcon}><ArrowBackIosIcon/></Box>
       <div className={styles.texttilte}><h4> Thốt Nốt - TP.Hồ Chí Minh</h4></div>
       <div className={styles.title1}>Tầng dưới</div>
       <div className={styles.title2}>Tầng trên</div>

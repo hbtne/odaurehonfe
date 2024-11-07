@@ -407,6 +407,11 @@ flex-grow: 0;
 margin-left: -500px;
 /* Thanh toán */
 
+}
+
+.textbutton
+{
+  
 
 /* UI semi */
 font-family: 'Open Sans';
@@ -426,5 +431,4 @@ color: #FFFFFF;
 flex: none;
 order: 0;
 flex-grow: 0;
-
 }

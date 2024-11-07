@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import styles from './fillInforScreen1way.module.css';
+import styles from './fillInforScreenround.module.css';
 import { Box, Button } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Checkbox from '../../../components/checkbox';
-const fillInforScreen1way = () => {
-    const seatPrice = 125000;
+const fillInforScreenround = () => {
+    const seatPrice1 = 125000;
+    const seatPrice2 = 125000;
+
 const disCount=0.2;
-const totalPrice = seatPrice- disCount*seatPrice;
+const totalPrice = (seatPrice1- disCount*seatPrice1) + (seatPrice2- disCount*seatPrice2);
 
   return (
       <div className={styles.container}>
-              <div className={styles.backIcon}><Button><ArrowBackIosIcon/></Button></div>
+             <div className={styles.backIcon}><Button><ArrowBackIosIcon/></Button></div>
         <div className={styles.container1}>
           <div className={styles.title}>TP. Hồ Chí Minh - Thốt Nốt</div>
           <Box className={styles.formContainer}>
@@ -33,7 +35,8 @@ const totalPrice = seatPrice- disCount*seatPrice;
         <div className={styles.container3}>
             <Box className={styles.payInfor}>
                 <div className={styles.tilteBox1}> Thông tin thanh toán</div>
-                <div className={styles.text}>Giá lượt đi:          {seatPrice.toLocaleString()}  VND</div>
+                <div className={styles.text}>Giá lượt đi:          {seatPrice1.toLocaleString()}  VND</div>
+                <div className={styles.text}>Giá lượt về:          {seatPrice2.toLocaleString()}  VND</div>
                 <div className={styles.text}>Giảm giá:          {(disCount*100).toLocaleString()}%</div>
                 <div className={styles.text}><strong>Thành tiền:          {totalPrice.toLocaleString()}  VND</strong></div>
             </Box>
@@ -56,4 +59,4 @@ const totalPrice = seatPrice- disCount*seatPrice;
   );
 };
 
-  export default fillInforScreen1way;
+  export default fillInforScreenround;

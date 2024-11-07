@@ -942,8 +942,8 @@ padding: 17px 51px;
 gap: 10px;
 margin-top: 10px;
 margin-right: 50px;
-width: 125px;
-height: 45px;
+width: 50px;
+height: 20px;
 
 background: #D7987D;
 border-radius: 10px;
@@ -957,13 +957,16 @@ flex-grow: 0;
 
 
 /* H4 */
-font-family: 'Open Sans';
+
+}
+.textbut
+{
+    font-family: 'Open Sans';
 font-style: normal;
 font-weight: 800;
 font-size: 28px;
 color: #FFFFFF;
 }
-
 .bg
 {
     /* Ellipse 1 */
