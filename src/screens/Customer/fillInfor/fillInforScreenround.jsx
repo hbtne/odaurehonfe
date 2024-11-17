@@ -3,13 +3,27 @@ import styles from './fillInforScreenround.module.css';
 import { Box, Button } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Checkbox from '../../../components/checkbox';
-const fillInforScreenround = () => {
-    const seatPrice1 = 125000;
-    const seatPrice2 = 125000;
+import Payment from '../../../components/Modal/Payment/ConfirmPay';
+const FillInforScreenround = () => {
+const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+const handlePayment = () => {
+  setIsDialogOpen(true);
+};
+
+const handleCloseDialog = () => {
+  setIsDialogOpen(false);
+};
+
+const handleConfirmBooking = () => {
+  alert('Đặt vé thành công!');
+  setIsDialogOpen(false);
+};
+    const totalReturnPrice = 125000;
+    const totalOutboundPrice = 125000;
 
 const disCount=0.2;
-const totalPrice = (seatPrice1- disCount*seatPrice1) + (seatPrice2- disCount*seatPrice2);
-
+const totalPrice = (totalOutboundPrice- disCount*totalOutboundPrice) + (totalReturnPrice- disCount*totalReturnPrice);
   return (
       <div className={styles.container}>
              <div className={styles.backIcon}><Button><ArrowBackIosIcon/></Button></div>
@@ -35,8 +49,8 @@ const totalPrice = (seatPrice1- disCount*seatPrice1) + (seatPrice2- disCount*sea
         <div className={styles.container3}>
             <Box className={styles.payInfor}>
                 <div className={styles.tilteBox1}> Thông tin thanh toán</div>
-                <div className={styles.text}>Giá lượt đi:          {seatPrice1.toLocaleString()}  VND</div>
-                <div className={styles.text}>Giá lượt về:          {seatPrice2.toLocaleString()}  VND</div>
+                <div className={styles.text}>Giá lượt đi:          {totalOutboundPrice.toLocaleString()}  VND</div>
+                <div className={styles.text}>Giá lượt về:          {totalReturnPrice.toLocaleString()}  VND</div>
                 <div className={styles.text}>Giảm giá:          {(disCount*100).toLocaleString()}%</div>
                 <div className={styles.text}><strong>Thành tiền:          {totalPrice.toLocaleString()}  VND</strong></div>
             </Box>
@@ -52,11 +66,17 @@ const totalPrice = (seatPrice1- disCount*seatPrice1) + (seatPrice2- disCount*sea
         <div className={styles.text2}>Tổng tiền: </div>
         <div className={styles.total}>{totalPrice.toLocaleString()}  VND</div>
         <div className={styles.cancel}><Button>Hủy</Button></div>
-        <div className={styles.paying}><Button><div className={styles.textbutton}>Thanh toán</div></Button></div>
+        <div className={styles.paying}><Button><div className={styles.textbutton} onClick={handlePayment}>Thanh toán</div></Button></div>
       </Box>
+      <Payment
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+        onConfirm={handleConfirmBooking}
+        totalPrice={totalPrice}
+      />
       <div className={styles.bg}/>
       </div>
   );
 };
 
-  export default fillInforScreenround;
+  export default FillInforScreenround;

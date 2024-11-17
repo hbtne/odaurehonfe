@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './chooseSeatScreen1way.module.css';
 import { Box, Button } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import Confirm from '../../../components/Modal/ConfirmTicket/ConfirmTicket1way';
 const ChooseSeatScreen1way = () => {
   const seatRows = [
     { id: 'A1' }, { id: 'A2' }, { id: 'A3' }, { id: 'A4' }, { id: 'A5', booked: true }, { id: 'A6' },
@@ -11,6 +12,22 @@ const ChooseSeatScreen1way = () => {
     { id: 'B7' }, { id: 'B8' }, { id: 'B9' }, { id: 'B10', booked: true }, { id: 'B11' }, { id: 'B12' },
     { id: 'B13', booked: true }, { id: 'B14' }, { id: 'B15' }, { id: 'B16' }, { id: 'B17' }, { id: 'B18' }, { id: 'B19' },
   ];
+  const route = "Miền Tây - Ô Môn"; 
+const departureTime = "13:30 09/12/2024"; 
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleBookTicket = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleConfirmBooking = () => {
+    alert('Đặt vé thành công!');
+    setIsDialogOpen(false);
+  };
 
   const [selectedSeats, setSelectedSeats] = useState([]);
   const seatPrice = 125000;
@@ -32,7 +49,7 @@ const ChooseSeatScreen1way = () => {
   return (
     <div className={styles.container}>
       <div className={styles.backIcon}><Button><ArrowBackIosIcon/></Button></div>
-      <div className={styles.texttilte}><h4>TP. Hồ Chí Minh - Thốt Nốt</h4></div>
+      <div className={styles.texttilte}><h4>{route}</h4></div>
       <div className={styles.title1}>Tầng dưới</div>
       <div className={styles.title2}>Tầng trên</div>
       <Box className={styles.seatLayout}>
@@ -65,8 +82,8 @@ const ChooseSeatScreen1way = () => {
         
       <Box className={styles.details}>
         <h2 className={styles.center}>Thông tin lượt đi</h2>
-        <p><strong>Tuyến xe:</strong> Miền Tây - Ô Môn</p>
-        <p><strong>Thời gian xuất bến:</strong> 13:30 09/12/2024</p>
+        <p><strong>Tuyến xe:</strong> {route} </p>
+        <p><strong>Thời gian xuất bến:</strong> {departureTime}</p>
         <p><strong>Số lượng ghế:</strong> {selectedSeats.length}</p>
         <p><strong>Số ghế:</strong> {selectedSeats.join(', ')}</p>
         <p><strong>Tổng tiền lượt đi:</strong> {totalPrice.toLocaleString()} đồng</p>
@@ -82,7 +99,16 @@ const ChooseSeatScreen1way = () => {
             <span className={styles.statusText}>Còn trống</span>
         </div>
     </div>
-      <button className={styles.bookButton}>Đặt vé</button>
+      <button className={styles.bookButton}  onClick={handleBookTicket}>Đặt vé</button>
+      <Confirm
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+        onConfirm={handleConfirmBooking}
+        route={route}
+        departureTime={departureTime}
+        selectedSeats={selectedSeats}
+        totalPrice={totalPrice}
+      />
     </div>
   );
 };
