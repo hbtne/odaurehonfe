@@ -16,7 +16,7 @@ const handleCloseDialog = () => {
 };
 
 const handleConfirmBooking = () => {
-  alert('Đặt vé thành công!');
+  alert('Thanh toán thành công! Kiểm tra email của bạn để xem thông tin vé!');
   setIsDialogOpen(false);
 };
     const totalReturnPrice = 125000;
@@ -64,7 +64,7 @@ const totalPrice = (totalOutboundPrice- disCount*totalOutboundPrice) + (totalRet
       </div>
       <Box className={styles.confirm}>
         <div className={styles.text2}>Tổng tiền: </div>
-        <div className={styles.total}>{totalPrice.toLocaleString()}  VND</div>
+        <div className={styles.total}>{totalPrice.toLocaleString()}VND</div>
         <div className={styles.cancel}><Button>Hủy</Button></div>
         <div className={styles.paying}><Button><div className={styles.textbutton} onClick={handlePayment}>Thanh toán</div></Button></div>
       </Box>

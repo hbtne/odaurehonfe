@@ -41,7 +41,6 @@ const ConfirmPay = ({
             Momo
           </label>
         </div>
-
         <hr />
 
         <div className={styles.priceInfo}>

@@ -3,7 +3,23 @@ import styles from './fillInforScreen1way.module.css';
 import { Box, Button } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Checkbox from '../../../components/checkbox';
-const fillInforScreen1way = () => {
+import Payment from '../../../components/Modal/Payment/ConfirmPay';
+
+const FillInforScreen1way = () => {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+const handlePayment = () => {
+  setIsDialogOpen(true);
+};
+
+const handleCloseDialog = () => {
+  setIsDialogOpen(false);
+};
+
+const handleConfirmBooking = () => {
+  alert('Thanh toán thành công! Kiểm tra email của bạn để xem thông tin vé!');
+  setIsDialogOpen(false);
+};
     const seatPrice = 125000;
 const disCount=0.2;
 const totalPrice = seatPrice- disCount*seatPrice;
@@ -49,11 +65,17 @@ const totalPrice = seatPrice- disCount*seatPrice;
         <div className={styles.text2}>Tổng tiền: </div>
         <div className={styles.total}>{totalPrice.toLocaleString()}  VND</div>
         <div className={styles.cancel}><Button>Hủy</Button></div>
-        <div className={styles.paying}><Button><div className={styles.textbutton}>Thanh toán</div></Button></div>
+        <div className={styles.paying}><Button><div className={styles.textbutton} onClick={handlePayment}>Thanh toán</div></Button></div>
       </Box>
+      <Payment
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+        onConfirm={handleConfirmBooking}
+        totalPrice={totalPrice}
+      />
       <div className={styles.bg}/>
       </div>
   );
 };
 
-  export default fillInforScreen1way;
+  export default FillInforScreen1way;
