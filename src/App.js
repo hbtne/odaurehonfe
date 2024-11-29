@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate,main } from 'react-router-dom';
 
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
@@ -30,6 +30,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Navbar />
+        <main>
         <Routes>
           <Route path="/mainCus" element={<MainScreenCus />} />
           <Route path="/searchScreen" element={<SearchRouteScreen />} />
@@ -54,6 +55,7 @@ function App() {
           <Route path="/report" element={<Report/>}/>
 
         </Routes>
+        </main>
         <Footer/>
       </BrowserRouter>
     </div>

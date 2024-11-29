@@ -110,7 +110,7 @@ box-sizing: border-box;
 width: 500px;
 height: 66px;
 left: 0px;
-top: 39px;
+top: 0px;
 background: rgba(255, 255, 255, 0.5);
 border: 2px solid rgba(0, 0, 0, 0.25);
 border-radius: 12px;
@@ -267,4 +267,3 @@ margin-top: 40px;
   justify-content:space-between;
       width: 100%; 
 }
-
