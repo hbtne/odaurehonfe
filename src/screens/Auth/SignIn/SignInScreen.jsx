@@ -102,13 +102,21 @@ const SignInScreen = () => {
       const response = await axios.post("http://localhost:5278/api/auth/signin", formData);
 
       if (response.status === 200) {
-        const { accountType } = response.data;  
+        const { accountType } = response.data;
+        console.log(response.data.accountId);
+         if ( response.data.accountId) {
+        localStorage.setItem("accountId", response.data.accountId );
+      }  
 
         if (accountType === "Customer") {
           navigate("/searchScreen"); 
         } else if (accountType === "Driver") {
           navigate("/viewschedule");  
         }
+       else if (accountType === "TicketClerk") {
+        navigate("/managebus"); 
+      }
+        
       } else {
         alert(response.data.message || "Đăng nhập thất bại");
       }

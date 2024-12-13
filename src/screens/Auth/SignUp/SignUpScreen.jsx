@@ -53,7 +53,7 @@ const SignUpScreen = () => {
       password: formData.password,
       status: "active",  
       userName: formData.email,  
-      userType: "customer",  
+      userType: "Customer",  
     };
     try {
       const response = await axios.post("http://localhost:5278/api/auth/signup", userData);
@@ -62,11 +62,9 @@ const SignUpScreen = () => {
       navigate("/signin"); 
     } catch (error) {
       if (error.response) {
-        // Server returned an error response
         console.error("Error:", error.response.data);
         alert(`Error: ${error.response.data.errors}`);
       } else {
-        // No response from server
         console.error("Error:", error.message);
         alert("There was an error with your request.");
       }

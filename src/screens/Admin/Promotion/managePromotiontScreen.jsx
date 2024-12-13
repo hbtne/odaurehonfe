@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import {  Box, Button, Table,  TableBody, TableCell,TableContainer, TableHead,TableRow,Paper,TextField,MenuItem,Select,} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Import axios
 import styles from "./manageTicketScreen.module.css";
-import  AddAccountModal from "./modalAdd";
+import AddAccountModal from "./modalAdd";
 import ActionModal from "./modalAction";
-import DeleteModal from './modalDelete';
-import EditModal from './modalEdit';
+import DeleteModal from "./modalDelete";
+import EditModal from "./modalEdit";
 
 const ManagePromotionScreen = () => {
-
-const navigate = useNavigate();
-  const [results, setResults] = useState([]);
+  const navigate = useNavigate();
+  const [promotions, setPromotions] = useState([]);
   const [filterType, setFilterType] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isAddModalOpen, setAddModalOpen] = useState(false);
@@ -20,49 +20,47 @@ const navigate = useNavigate();
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
-  const mockData = [
-    {
-        promotionId:'10',
-        name: 'Khuyến mãi ngưởi mới',
-        startdate: '13:30 9/12/2024',
-        enddate: '13:30 9/12/2024',
-        discountpercent:'10%',
-        discount:'',
-    },
-    {
-      promotionId:'10',
-      name: 'Khuyến mãi ngưởi mới',
-      startdate: '13:30 9/12/2024',
-      enddate: '13:30 9/12/2024',
-      discountpercent:'10%',
-      discount:'',
-    },
-   
-  ];
+  useEffect(() => {
+    fetchPromotions();
+  }, []);
+
+  const fetchPromotions = async () => {
+    try {
+      const response = await axios.get("http://localhost:5278/api/promotion");
+      setPromotions(response.data);
+    } catch (error) {
+      console.error("Error fetching promotions:", error);
+    }
+  };
 
   const handleFilter = () => {
-    let filteredResults = mockData;
+    let filteredResults = promotions;
 
     if (searchQuery) {
       filteredResults = filteredResults.filter(
-        (Promotion) =>
-          Promotion.promotionId.includes(searchQuery) ||
-          Promotion.name.toLowerCase().includes(searchQuery.toLowerCase())
-
+        (promotion) =>
+          promotion.promotionId.includes(searchQuery) ||
+          promotion.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-    setResults(filteredResults);
+
+    setPromotions(filteredResults);
   };
 
-  const handleRowClick = (Promotion) => {
-    setSelectedPromotion(Promotion);
+  const handleRowClick = (promotion) => {
+    setSelectedPromotion(promotion);
     setActionModalOpen(true);
   };
 
-  const handleDelete = () => {
-    setResults(results.filter((Promotion) => Promotion.id !== selectedPromotion.id));
-    setDeleteModalOpen(false);
-    setActionModalOpen(false);
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:5278/api/promotion/${selectedPromotion.promoID}`);
+      setPromotions(promotions.filter((promotion) => promotion.promoID !== selectedPromotion.promoID));
+      setDeleteModalOpen(false);
+      setActionModalOpen(false);
+    } catch (error) {
+      console.error("Error deleting promotion:", error);
+    }
   };
 
   return (
@@ -75,32 +73,19 @@ const navigate = useNavigate();
       <div className={styles.title}>QUẢN LÝ KHUYẾN MÃI</div>
 
       <Box className={styles.filter}>
-
         <TextField
           label="Tìm theo tên/ID"
           onChange={(e) => setSearchQuery(e.target.value)}
           sx={{ width: "200px", marginRight: "16px" }}
         />
         <Button
-          sx={{
-            color: "#ffffff",
-            backgroundColor: "#D7987D",
-            borderRadius: "30px",
-            width: "140px",
-            height: "60px",
-          }}
+          sx={{ color: "#ffffff", backgroundColor: "#D7987D", borderRadius: "30px", width: "140px", height: "60px" }}
           onClick={handleFilter}
         >
           Tìm kiếm
         </Button>
         <Button
-          sx={{
-            color: "#ffffff",
-            backgroundColor: "#2E6B75",
-            borderRadius: "30px",
-            width: "140px",
-            height: "60px",
-          }}
+          sx={{ color: "#ffffff", backgroundColor: "#2E6B75", borderRadius: "30px", width: "140px", height: "60px" }}
           onClick={() => setAddModalOpen(true)}
         >
           Thêm
@@ -109,12 +94,8 @@ const navigate = useNavigate();
 
       <AddAccountModal open={isAddModalOpen} onClose={() => setAddModalOpen(false)} />
 
-      {results.length > 0 ? (
-        <TableContainer
-          component={Paper}
-          className={styles.resultContainer}
-          sx={{ overflowX: "auto" }}
-        >
+      {promotions.length > 0 ? (
+        <TableContainer component={Paper} className={styles.resultContainer} sx={{ overflowX: "auto" }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -124,34 +105,22 @@ const navigate = useNavigate();
                 <TableCell><strong>Ngày kết thúc</strong></TableCell>
                 <TableCell><strong>Khuyến mãi</strong></TableCell>
                 <TableCell><strong>Khuyến mãi theo phần trăm</strong></TableCell>
-                <TableCell><strong>Đối tượng áp dụng</strong></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {results.map((Promotion, index) => (
+              {promotions.map((promotion, index) => (
                 <TableRow
                   key={index}
-                  onClick={() => handleRowClick(Promotion)}
+                  onClick={() => handleRowClick(promotion)}
                   className={styles.tablerow}
                   style={{ cursor: "pointer" }}
                 >
-                  <TableCell>{Promotion.promotionId}</TableCell>
-                  <TableCell>{Promotion.name}</TableCell>
-                  <TableCell>{Promotion.startdate}</TableCell>
-                  <TableCell>{Promotion.enddate}</TableCell>
-                  <TableCell>{Promotion.dicountpercent}</TableCell>
-                  <TableCell>{Promotion.discount}</TableCell>
-                  <TableCell>
-                    <span
-                      style={{
-                        color:
-                          Promotion.status === "Hoạt động" ? "#D7987D" : "#2E6B75",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {Promotion.status}
-                    </span>
-                  </TableCell>
+                  <TableCell>{promotion.promoID}</TableCell>
+                  <TableCell>{promotion.name}</TableCell>
+                  <TableCell>{promotion.startDate}</TableCell>
+                  <TableCell>{promotion.endDate}</TableCell>
+                  <TableCell>{promotion.discount}</TableCell>
+                  <TableCell>{promotion.discountPercent}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -178,7 +147,8 @@ const navigate = useNavigate();
       <EditModal
         open={isEditModalOpen}
         onClose={() => setEditModalOpen(false)}
-        Promotion={selectedPromotion}
+        promotion={selectedPromotion}
+        fetchPromotions={fetchPromotions}
       />
 
       <DeleteModal

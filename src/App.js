@@ -34,8 +34,8 @@ function App() {
         <Routes>
           <Route path="/mainCus" element={<MainScreenCus />} />
           <Route path="/searchScreen" element={<SearchRouteScreen />} />
-          <Route path="/chooseseat1way" element={<ChooseSeat_1way/>}/>
-          <Route path="/chooseseatround" element={<ChooseSeat_round/>}/>
+          <Route path="/chooseseat1way/:busID" element={<ChooseSeat_1way/>}/>
+          <Route path="/chooseseatround/:busID" element={<ChooseSeat_round/>}/>
           <Route path="/fillinfor1way" element={<FillInfor_1way/>}/>
           <Route path="/fillinforround" element={<FillInfor_round/>}/>
           <Route path="/lookupticket" element={<LookUpTicket/>}/>

@@ -1,20 +1,67 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import styles from './chooseSeatScreen1way.module.css';
 import { Box, Button } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Confirm from '../../../components/Modal/ConfirmTicket/ConfirmTicket1way';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const ChooseSeatScreen1way = () => {
-  const seatRows = [
-    { id: 'A1' }, { id: 'A2' }, { id: 'A3' }, { id: 'A4' }, { id: 'A5', booked: true }, { id: 'A6' },
-    { id: 'A7' }, { id: 'A8' }, { id: 'A9' }, { id: 'A10', booked: true }, { id: 'A11' }, { id: 'A12' },
-    { id: 'A13', booked: true }, { id: 'A14' }, { id: 'A15' }, { id: 'A16' }, { id: 'A17' }, { id: 'A18' }, { id: 'A19' },
-    { id: 'B1' }, { id: 'B2' }, { id: 'B3' }, { id: 'B4' }, { id: 'B5', booked: true }, { id: 'B6' },
-    { id: 'B7' }, { id: 'B8' }, { id: 'B9' }, { id: 'B10', booked: true }, { id: 'B11' }, { id: 'B12' },
-    { id: 'B13', booked: true }, { id: 'B14' }, { id: 'B15' }, { id: 'B16' }, { id: 'B17' }, { id: 'B18' }, { id: 'B19' },
-  ];
-  const route = "Miền Tây - Ô Môn"; 
-const departureTime = "13:30 09/12/2024"; 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { busID } = useParams(); 
+  const [isDialogOpen, setIsDialogOpen] = useState(false); 
+  const [selectedSeats, setSelectedSeats] = useState([]); 
+  const [routeData, setRouteData] = useState({ departPlace: '', arrivalPlace: '', departureTime: '' });
+  const [seats, setSeats] = useState([]); 
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState('');
+  const [bus, setBus] = useState({ pricePerSeat: 0 }); 
+
+  
+  useEffect(() => {
+    const fetchSeats = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`http://localhost:5278/api/ticket/bus-routes/${busID}`);
+        if (response.data && response.data.bus && response.data.bus.seats) {
+          const fetchedSeats = response.data.bus.seats;
+          setSeats(fetchedSeats);
+          setRouteData({
+            departPlace: response.data.departPlace,
+            arrivalPlace: response.data.arrivalPlace,
+            departureTime: response.data.departureTime
+          });
+          setBus({
+            pricePerSeat: response.data.bus.pricePerSeat
+          });
+        } else {
+          console.error('Không tìm thấy thông tin ghế.');
+          setError('Không có dữ liệu ghế.');
+        }
+      } catch (err) {
+        console.error('Error fetching bus seats:', err);
+        setError('Lỗi khi tải dữ liệu ghế.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchSeats();
+  }, [busID]);
+
+
+  const toggleSeatSelection = (seat) => {
+    if (seat.isBooked) return; 
+
+    setSelectedSeats((prevSelectedSeats) => {
+      if (prevSelectedSeats.includes(seat.seatID)) {
+        return prevSelectedSeats.filter((s) => s !== seat.seatID); 
+      } else {
+        return [...prevSelectedSeats, seat.seatID]; 
+      }
+    });
+  };
+
 
   const handleBookTicket = () => {
     setIsDialogOpen(true);
@@ -24,32 +71,53 @@ const departureTime = "13:30 09/12/2024";
     setIsDialogOpen(false);
   };
 
-  const handleConfirmBooking = () => {
-    alert('Đặt vé thành công!');
-    setIsDialogOpen(false);
-  };
+  const handleConfirmBooking = async () => {
+    if (selectedSeats.length === 0) {
+      alert("Vui lòng chọn ít nhất một ghế trước khi đặt vé.");
+      return;
+    }
+  
+    const bookingData = {
+      BusID: busID,
+      CustomerID: parseInt(localStorage.getItem("accountId")), 
+      SeatNum: selectedSeats.join(','), 
+      Type: bus.type || "Standard", 
+    }; 
+    console.log("AccountId in localStorage:", localStorage.getItem("accountId"));
 
-  const [selectedSeats, setSelectedSeats] = useState([]);
-  const seatPrice = 125000;
-
-  const toggleSeatSelection = (seat) => {
-    if (seat.booked) return;
-
-    setSelectedSeats((prevSelectedSeats) => {
-      if (prevSelectedSeats.includes(seat.id)) {
-        return prevSelectedSeats.filter((s) => s !== seat.id);
-      } else {
-        return [...prevSelectedSeats, seat.id];
+    console.log("CustomerID:", localStorage.getItem("accountId"));
+    console.log("bookingData:", bookingData);
+    
+    try {
+      const response = await axios.post('http://localhost:5278/api/ticket/create-tickets', bookingData);
+      if (response.status === 200) {
+        console.log("Tickets created successfully:", response.data.tickets);
+        alert("Đặt vé thành công!");
+        setSelectedSeats([]); 
+        setIsDialogOpen(false); 
       }
-    });
+    } catch (error) {
+      console.error("Error creating tickets:", error.response?.data || error.message);
+      alert("Đã xảy ra lỗi khi đặt vé. Vui lòng thử lại.");
+    }
   };
+  
+  
+  const totalPrice = selectedSeats.length * bus.pricePerSeat;
 
-  const totalPrice = selectedSeats.length * seatPrice;
+  if (loading) {
+    return <div>Đang tải dữ liệu...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>; 
+  }
 
   return (
+
     <div className={styles.container}>
       <div className={styles.backIcon}><Button><ArrowBackIosIcon/></Button></div>
-      <div className={styles.texttilte}><h4>{route}</h4></div>
+      <div className={styles.texttilte}><h4>{routeData.departPlace} - {routeData.arrivalPlace}</h4></div>
       <div className={styles.title1}>Tầng dưới</div>
       <div className={styles.title2}>Tầng trên</div>
       <Box className={styles.seatLayout}>
@@ -57,34 +125,34 @@ const departureTime = "13:30 09/12/2024";
        
         <Box className={styles.seatColumn}>
        
-          {seatRows.slice(0, 19).map((seat) => (
+          {seats.slice(0, 19).map((seat) => (
             <Box
-              key={seat.id}
-              className={`${styles.seat} ${seat.booked ? styles.booked : selectedSeats.includes(seat.id) ? styles.selected : styles.available}`}
+              key={seat.seatID}
+              className={`${styles.seat} ${seat.isBooked ? styles.booked : selectedSeats.includes(seat.seatID) ? styles.selected : styles.available}`}
               onClick={() => toggleSeatSelection(seat)}
             >
-              {seat.id}
-              
+              {seat.seatNumber}
+
             </Box>
           ))}
         </Box>
         <Box className={styles.seatColumn}>
-          {seatRows.slice(19).map((seat) => (
+          {seats.slice(19).map((seat) => (
             <Box
-              key={seat.id}
-              className={`${styles.seat} ${seat.booked ? styles.booked : selectedSeats.includes(seat.id) ? styles.selected : styles.available}`}
+              key={seat.seatID}
+              className={`${styles.seat}  ${seat.isBooked ? styles.booked : selectedSeats.includes(seat.seatID) ? styles.selected : styles.available}`}
               onClick={() => toggleSeatSelection(seat)}
             >
-              {seat.id}
+              {seat.seatNumber}
             </Box>
           ))}
         </Box>
         
       <Box className={styles.details}>
         <h2 className={styles.center}>Thông tin lượt đi</h2>
-        <p><strong>Tuyến xe:</strong> {route} </p>
-        <p><strong>Thời gian xuất bến:</strong> {departureTime}</p>
-        <p><strong>Số lượng ghế:</strong> {selectedSeats.length}</p>
+        <p><strong>Tuyến xe:</strong> {routeData.departPlace} - {routeData.arrivalPlace} </p>
+        <p><strong>Thời gian xuất bến:</strong>  {routeData.departureTime}</p>
+        <p><strong>Số lượng ghế:</strong>  {selectedSeats.length}</p>
         <p><strong>Số ghế:</strong> {selectedSeats.join(', ')}</p>
         <p><strong>Tổng tiền lượt đi:</strong> {totalPrice.toLocaleString()} đồng</p>
       </Box>
@@ -104,13 +172,13 @@ const departureTime = "13:30 09/12/2024";
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
         onConfirm={handleConfirmBooking}
-        route={route}
-        departureTime={departureTime}
+        route={`${routeData.departPlace} - ${routeData.arrivalPlace}`}
+        departureTime={routeData.departureTime}
         selectedSeats={selectedSeats}
         totalPrice={totalPrice}
       />
+
     </div>
   );
 };
-
 export default ChooseSeatScreen1way;
