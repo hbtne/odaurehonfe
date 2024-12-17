@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './Navbar.module.css';
-import { Box } from '@mui/material';
+import { Box,Button } from '@mui/material';
 import { Link,useNavigate } from 'react-router-dom';
 import axios from 'axios'; 
 
-const Navbar = () => {
+const NavbarTicketClerk = () => {
     const navigate = useNavigate();
 
     const handleSignOut = async () => {
@@ -14,7 +14,7 @@ const Navbar = () => {
             if (response.status === 200) {
                 localStorage.clear();
 
-          
+        
             } else {
                 console.error(response.data.message || 'Signout failed.');
             }
@@ -31,18 +31,13 @@ const Navbar = () => {
             </Box>
 
             <Box className={styles.thanhContainer}>
-                <Link to="/customer/mainCus" className={styles.tchuContainer}>
-                    <text className={styles.text}>TRANG CHỦ</text>
-                </Link>
-                <Link to="/customer/searchScreen" className={styles.tchuContainer}>
+                <Link to="/ticketclerk/searchScreen" className={styles.tchuContainer}>
                     <text className={styles.text}>ĐẶT VÉ</text>
                 </Link>
-                <Link to="/customer/lookupticket" className={styles.tchuContainer}>
+                <Link to="/ticketclerk/lookupticketstaff" className={styles.tchuContainer}>
                     <text className={styles.text}>TRA CỨU VÉ</text>
                 </Link>
-                <Link to="/customer/contact" className={styles.tchuContainer}>
-                    <text className={styles.text}>LIÊN HỆ</text>
-                </Link>
+
                 <Box className={styles.ava} />
                 <Link to="/signin" className={styles.logoutContainer} onClick={handleSignOut}>
                     <text className={styles.text}>ĐĂNG XUẤT</text>
@@ -51,4 +46,4 @@ const Navbar = () => {
         </Box>
     );
 };
-export default Navbar;
+export default NavbarTicketClerk;

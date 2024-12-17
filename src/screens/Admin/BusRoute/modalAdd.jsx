@@ -131,6 +131,8 @@ const AddModal = ({ open, onClose }) => {
     arrivalPlace: "",
     departureTime: null, 
     duration: "",
+    pricePerSeat:"",
+    pricePerSeatVip:"",
   });
 
   const handleChange = (e) => {
@@ -148,8 +150,10 @@ const AddModal = ({ open, onClose }) => {
         busRouteId: formData.busRouteId,
         departPlace: formData.departPlace,
         arrivalPlace: formData.arrivalPlace,
-        departureTime: formData.departureTime ? formData.departureTime.toISOString() : null, // Đảm bảo gửi thời gian ở định dạng ISO 8601
+        departureTime: formData.departureTime ? formData.departureTime.toISOString() : null, 
         duration: formData.duration,
+        pricePerSeat: formData.pricePerSeat,
+        pricePerSeatVip: formData.pricePerSeatVip,
       };
   
       const response = await axios.post("http://localhost:5278/api/busroute", newRoute);
@@ -161,6 +165,8 @@ const AddModal = ({ open, onClose }) => {
         arrivalPlace: "",
         departureTime: null,
         duration: "",
+        pricePerSeat:"",
+        pricePerSeatVip:"",
       });
     } catch (error) {
       console.error("Có lỗi xảy ra khi thêm tuyến xe: ", error);
@@ -215,6 +221,22 @@ const AddModal = ({ open, onClose }) => {
           label="Thời gian di chuyển"
           name="duration"
           value={formData.duration}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Giá vé thường"
+          name="pricePerSeat"
+          value={formData.pricePerSeat}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Giá vé Vip"
+          name="pricePerSeatVip"
+          value={formData.pricePerSeatVip}
           onChange={handleChange}
           fullWidth
           margin="normal"

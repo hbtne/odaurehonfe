@@ -136,8 +136,10 @@ const EditModal = ({ open, onClose, selectedRoute, onRouteUpdate }) => {
     busRouteId: "",
     departPlace: "",
     arrivalPlace: "",
-    departureTime: null, // Đảm bảo departureTime là null khi chưa có dữ liệu
+    departureTime: null, 
     duration: "",
+    pricePerSeat:"",
+    pricePerSeatVip:"",
   });
 
   useEffect(() => {
@@ -147,8 +149,10 @@ const EditModal = ({ open, onClose, selectedRoute, onRouteUpdate }) => {
         busRouteId: selectedRoute.busRouteID,
         departPlace: selectedRoute.departPlace,
         arrivalPlace: selectedRoute.arrivalPlace,
-        departureTime: selectedRoute.departureTime ? new Date(selectedRoute.departureTime) : null, // Chuyển đổi sang đối tượng Date nếu có
+        departureTime: selectedRoute.departureTime ? new Date(selectedRoute.departureTime) : null, 
         duration: selectedRoute.duration,
+        pricePerSeat: selectedRoute.pricePerSeat,
+        pricePerSeatVip:selectedRoute.pricePerSeatVip,
       });
     }
   }, [selectedRoute, open]);
@@ -163,7 +167,6 @@ const EditModal = ({ open, onClose, selectedRoute, onRouteUpdate }) => {
   };
 
   const handleSubmit = async () => {
-    // Log giá trị busRouteId và formData để kiểm tra
     console.log("Form Data trước khi gửi request:", formData);
   
     if (!formData.busRouteId) {
@@ -180,7 +183,7 @@ const EditModal = ({ open, onClose, selectedRoute, onRouteUpdate }) => {
     try {
       const response = await axios.put(`http://localhost:5278/api/busroute/${updatedRoute.busRouteId}`, updatedRoute);
       console.log("Tuyến xe đã được cập nhật: ", response.data);
-      onRouteUpdate(response.data); // Cập nhật dữ liệu trong ManageBusRouteScreen
+      onRouteUpdate(response.data); 
       onClose();
     } catch (error) {
       console.error("Có lỗi khi cập nhật tuyến xe: ", error.response ? error.response.data : error.message);
@@ -233,6 +236,22 @@ const EditModal = ({ open, onClose, selectedRoute, onRouteUpdate }) => {
           label="Thời gian di chuyển"
           name="duration"
           value={formData.duration}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Giá vé thường"
+          name="pricePerSeat"
+          value={formData.pricePerSeat}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Giá vé Vip"
+          name="pricePerSeatVip"
+          value={formData.pricePerSeatVip}
           onChange={handleChange}
           fullWidth
           margin="normal"

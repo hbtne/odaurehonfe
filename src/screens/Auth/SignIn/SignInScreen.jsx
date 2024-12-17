@@ -109,13 +109,17 @@ const SignInScreen = () => {
       }  
 
         if (accountType === "Customer") {
-          navigate("/searchScreen"); 
+          navigate("/customer/searchScreen");
         } else if (accountType === "Driver") {
-          navigate("/viewschedule");  
+          navigate("/driver/viewschedule");
+        } else if (accountType === "TicketClerk") {
+          navigate("/ticketclerk/lookupticketstaff");
+        } else if (accountType === "Admin") {
+          navigate("/admin/managebus");
+        } else {
+          alert("Unknown account type");
         }
-       else if (accountType === "TicketClerk") {
-        navigate("/managebus"); 
-      }
+
         
       } else {
         alert(response.data.message || "Đăng nhập thất bại");
@@ -129,7 +133,7 @@ const SignInScreen = () => {
   return (
     <div className={styles.container}>
       <div className={styles.backIcon}>
-        <Button onClick={() => navigate(-1)}>
+        <Button onClick={() =>  navigate("/signup")}>
           <ArrowBackIosIcon />
         </Button>
       </div>

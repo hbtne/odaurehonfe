@@ -2,6 +2,9 @@ import './App.css';
 import { BrowserRouter, Routes, Route, Navigate,main } from 'react-router-dom';
 
 import Navbar from './components/Navbar/Navbar';
+import NavbarAdmin from './components/Navbar/NavbarAdmin';
+import NavbarTicketClerk from './components/Navbar/NavbarTicketClerk';
+import NavbarDriver from './components/Navbar/NavbarDriver';
 import Footer from './components/Footer/Footer';
 import MainScreenCus from './screens/Customer/main/mainScreen_Cus'; 
 import SearchRouteScreen from './screens/Customer/search/searchScreen';
@@ -25,38 +28,89 @@ import ForgotPass_RePass from './screens/Auth/ForgetPassword/ForgotPass_RePass';
 import Promtion from './screens/Admin/Promotion/managePromotiontScreen';
 import Report from './screens/Admin/Report/ReportScreen';
 
+function CustomerLayout() {
+  return (
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/mainCus" element={<MainScreenCus />} />
+        <Route path="/searchScreen" element={<SearchRouteScreen />} />
+        <Route path="/chooseseat1way/:busID" element={<ChooseSeat_1way />} />
+        <Route path="/chooseseatround/:busID" element={<ChooseSeat_round />} />
+        <Route path="/fillinfor1way" element={<FillInfor_1way />} />
+        <Route path="/fillinforround" element={<FillInfor_round />} />
+        <Route path="/lookupticket" element={<LookUpTicket />} />
+        <Route path="/bookinghistory" element={<BookingHistory />} />
+      </Routes>
+      <Footer />
+    </>
+  );
+}
+
+function AdminLayout() {
+  return (
+    <>
+      <NavbarAdmin />
+      <Routes>
+        <Route path="/manageacc" element={<ManageAccount />} />
+        <Route path="/manageticket" element={<ManageTicket />} />
+        <Route path="/managebus" element={<ManageBus />} />
+        <Route path="/managebusroute" element={<ManageBusRoute />} />
+        <Route path="/managepromotion" element={<Promtion />} />
+        <Route path="/report" element={<Report />} />
+      </Routes>
+      <Footer />
+    </>
+  );
+}
+
+function TicketClerkLayout() {
+  return (
+    <>
+      <NavbarTicketClerk />
+      <Routes>
+      <Route path="/searchScreen" element={<SearchRouteScreen />} />
+
+        <Route path="/lookupticketstaff" element={<LookUpTicketstaf />} />
+      </Routes>
+      <Footer />
+    </>
+  );
+}
+
+function DriverLayout() {
+  return (
+    <>
+      <NavbarDriver />
+      <Routes>
+        <Route path="/viewschedule" element={<ViewSchedule />} />
+      </Routes>
+      <Footer />
+    </>
+  );
+}
+
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
-        <main>
         <Routes>
-          <Route path="/mainCus" element={<MainScreenCus />} />
-          <Route path="/searchScreen" element={<SearchRouteScreen />} />
-          <Route path="/chooseseat1way/:busID" element={<ChooseSeat_1way/>}/>
-          <Route path="/chooseseatround/:busID" element={<ChooseSeat_round/>}/>
-          <Route path="/fillinfor1way" element={<FillInfor_1way/>}/>
-          <Route path="/fillinforround" element={<FillInfor_round/>}/>
-          <Route path="/lookupticket" element={<LookUpTicket/>}/>
-          <Route path="/lookupticketstaff" element={<LookUpTicketstaf/>}/>
-          <Route path="/bookinghistory" element={<BookingHistory/>}/>
-          <Route path="/viewschedule" element={<ViewSchedule/>}/>
-          <Route path="/manageacc" element={<ManageAccount/>}/>
-          <Route path="/manageticket" element={<ManageTicket/>}/>
-          <Route path="/managebus" element={<ManageBus/>}/>
-          <Route path="/managebusroute" element={<ManageBusRoute/>}/>
-          <Route path="/signup" element={<SignUpScreen/>}/>
-          <Route path="/signin" element={<SignInScreen/>}/>
-          <Route path="/fpmail" element={<ForgotPass_Mail/>}/>
-          <Route path="/fppin" element={<ForgotPass_Pin/>}/>
-          <Route path="/fprepass" element={<ForgotPass_RePass/>}/>
-          <Route path="/managepromotion" element={<Promtion/>}/>
-          <Route path="/report" element={<Report/>}/>
+          <Route path="/customer/*" element={<CustomerLayout />} />
 
+          <Route path="/admin/*" element={<AdminLayout />} />
+
+          <Route path="/ticketclerk/*" element={<TicketClerkLayout />} />
+
+          <Route path="/driver/*" element={<DriverLayout />} />
+
+          <Route path="/signup" element={<SignUpScreen />} />
+          <Route path="/signin" element={<SignInScreen />} />
+          <Route path="/fpmail" element={<ForgotPass_Mail />} />
+          <Route path="/fppin" element={<ForgotPass_Pin />} />
+          <Route path="/fprepass" element={<ForgotPass_RePass />} />
+
+          <Route path="*" element={<SignInScreen />} />
         </Routes>
-        </main>
-        <Footer/>
       </BrowserRouter>
     </div>
   );

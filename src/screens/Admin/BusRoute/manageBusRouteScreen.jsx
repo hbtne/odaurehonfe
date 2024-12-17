@@ -207,6 +207,9 @@ const ManageBusRouteScreen = () => {
                 <TableCell><strong>Quãng thời gian đi </strong></TableCell>
                 <TableCell><strong>Điểm đi</strong></TableCell>
                 <TableCell><strong>Điểm đến</strong></TableCell>
+                <TableCell><strong>Giá vé thường</strong></TableCell>
+                <TableCell><strong>Giá vé vip</strong></TableCell>
+
               </TableRow>
             </TableHead>
             <TableBody>
@@ -222,6 +225,8 @@ const ManageBusRouteScreen = () => {
                   <TableCell>{busRoute.duration}</TableCell>
                   <TableCell>{busRoute.arrivalPlace}</TableCell>
                   <TableCell>{busRoute.departPlace}</TableCell>
+                  <TableCell>{busRoute.pricePerSeat}</TableCell>
+                  <TableCell>{busRoute.pricePerSeatVip}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

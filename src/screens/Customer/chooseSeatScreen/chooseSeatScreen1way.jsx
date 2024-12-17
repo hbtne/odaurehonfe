@@ -11,28 +11,30 @@ const ChooseSeatScreen1way = () => {
   const { busID } = useParams(); 
   const [isDialogOpen, setIsDialogOpen] = useState(false); 
   const [selectedSeats, setSelectedSeats] = useState([]); 
-  const [routeData, setRouteData] = useState({ departPlace: '', arrivalPlace: '', departureTime: '' });
+  const [routeData, setRouteData] = useState({ departPlace: '', arrivalPlace: '', departureTime: '', pricePerSeat: 0  });
   const [seats, setSeats] = useState([]); 
   const [loading, setLoading] = useState(false); 
   const [error, setError] = useState('');
-  const [bus, setBus] = useState({ pricePerSeat: 0 }); 
+  const [bus, setBus] = useState({type: ''}); 
 
   
   useEffect(() => {
     const fetchSeats = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:5278/api/ticket/bus-routes/${busID}`);
-        if (response.data && response.data.bus && response.data.bus.seats) {
-          const fetchedSeats = response.data.bus.seats;
+        const response = await axios.get(`http://localhost:5278/api/bookticket/bus-routes/${busID}`);
+        console.log("Route Data:", response.data);
+        if (response.data && response.data.bus && response.data.seats) {
+          const fetchedSeats = response.data.seats;
           setSeats(fetchedSeats);
           setRouteData({
             departPlace: response.data.departPlace,
             arrivalPlace: response.data.arrivalPlace,
-            departureTime: response.data.departureTime
+            departureTime: response.data.departureTime,
+            price: response.data.price
           });
           setBus({
-            pricePerSeat: response.data.bus.pricePerSeat
+            type: response.data.bus.type
           });
         } else {
           console.error('Không tìm thấy thông tin ghế.');
@@ -81,7 +83,8 @@ const ChooseSeatScreen1way = () => {
       BusID: busID,
       CustomerID: parseInt(localStorage.getItem("accountId")), 
       SeatNum: selectedSeats.join(','), 
-      Type: bus.type || "Standard", 
+      Type: bus.type || "Thường", 
+      Price:routeData.price,
     }; 
     console.log("AccountId in localStorage:", localStorage.getItem("accountId"));
 
@@ -89,7 +92,7 @@ const ChooseSeatScreen1way = () => {
     console.log("bookingData:", bookingData);
     
     try {
-      const response = await axios.post('http://localhost:5278/api/ticket/create-tickets', bookingData);
+      const response = await axios.post('http://localhost:5278/api/bookticket/create-tickets', bookingData);
       if (response.status === 200) {
         console.log("Tickets created successfully:", response.data.tickets);
         alert("Đặt vé thành công!");
@@ -103,7 +106,7 @@ const ChooseSeatScreen1way = () => {
   };
   
   
-  const totalPrice = selectedSeats.length * bus.pricePerSeat;
+  const totalPrice = selectedSeats.length * routeData.price;
 
   if (loading) {
     return <div>Đang tải dữ liệu...</div>;

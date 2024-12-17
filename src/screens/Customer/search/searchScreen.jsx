@@ -353,21 +353,25 @@ const SearchScreen = () => {
         const fetchSchedules = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('http://localhost:5278/api/ticket/bus-routes');
+                const response = await axios.get('http://localhost:5278/api/bookticket/bus-bus-routes');
+                console.log(response.data);
+    
                 const data = response.data.map(route => {
-                    const buses = route.buses.length ? route.buses : [{ seatsAvailable: 0, pricePerSeat: 0 }];
+                    const buses = route.bus ? [route.bus] : [{ seatsAvailable: 0, pricePerSeat: 0 }];
+    
                     return buses.map(bus => ({
                         routeName: `${route.departPlace} - ${route.arrivalPlace}`,
                         departureTime: formatTime(route.departureTime),
-                        duration: route.duration,
+                        duration: route.duration, // You may need to adjust this if `duration` is not available
                         arrivalTime: calculateArrivalTime(route.departureTime, route.duration),
-                        seatsAvailable: bus.seatsAvailable,
-                        price: bus.pricePerSeat,
+                        seatsAvailable: route.seatsAvailable,
+                        price: route.pricePerSeat,
                         plateNum: bus.plateNum,
                         busType: bus.type,
                         busID: bus.busID,
                     }));
                 }).flat();
+    
                 setSchedules(data);
             } catch (error) {
                 setError('Không thể tải lịch trình. Vui lòng thử lại sau.');
@@ -376,9 +380,10 @@ const SearchScreen = () => {
                 setLoading(false);
             }
         };
-
+    
         fetchSchedules();
     }, []);
+    
 
     const calculateArrivalTime = (departureTime, duration) => {
         if (typeof duration !== 'string') {
@@ -401,9 +406,9 @@ const SearchScreen = () => {
 
     const handleSelectBus = (busID) => {
         if (!checked) {
-        navigate(`/chooseseat1way/${busID}`); 
+        navigate(`/customer/chooseseat1way/${busID}`); 
     } else {
-        navigate(`/chooseseatround/${busID}`); 
+        navigate(`/customer/chooseseatround/${busID}`); 
     }
     };
     
