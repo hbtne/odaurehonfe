@@ -355,7 +355,6 @@ const ManageTicketScreen = () => {
                   <strong>Giá vé</strong>
                 </TableCell>
                 <TableCell>
-                  <strong>Trạng thái </strong>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -374,7 +373,6 @@ const ManageTicketScreen = () => {
                   <TableCell>{ticket.duration}</TableCell>
                   <TableCell>{ticket.type}</TableCell>
                   <TableCell>{ticket.price}</TableCell>
-                  <TableCell>{ticket.status}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

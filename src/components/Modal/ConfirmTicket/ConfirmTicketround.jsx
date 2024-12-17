@@ -25,7 +25,7 @@ const ConfirmTicketround = ({
             <p className={styles.left}><strong>Thời gian xuất bến:</strong> {departureTimeOutbound}</p>
         <p  className={styles.left}><strong>Số lượng ghế:</strong> {selectedOutboundSeats.length}</p>
         <p className={styles.left}><strong>Số ghế:</strong> {selectedOutboundSeats.join(', ')}</p>
-        <p className={styles.left}><strong>Tổng tiền lượt đi:</strong> {totalReturnPrice.toLocaleString()} đồng</p>
+        <p className={styles.left}><strong>Tổng tiền lượt đi:</strong> {totalOutboundPrice.toLocaleString()} đồng</p>
           </div>
           <div className={styles.content}>
             <h4 className={styles.center}>Thông tin lượt về</h4>
@@ -33,7 +33,7 @@ const ConfirmTicketround = ({
             <p className={styles.left}><strong>Thời gian xuất bến:</strong> {departureTimeReturnbound}</p>
         <p  className={styles.left}><strong>Số lượng ghế:</strong> {selectedReturnSeats.length}</p>
         <p className={styles.left}><strong>Số ghế:</strong> {selectedReturnSeats.join(', ')}</p>
-        <p className={styles.left}><strong>Tổng tiền lượt về:</strong> {totalOutboundPrice.toLocaleString()} đồng</p>
+        <p className={styles.left}><strong>Tổng tiền lượt về:</strong> {totalReturnPrice.toLocaleString()} đồng</p>
           </div>
           <div className={styles.buttonGroup}>
             <button className={styles.cancelButton} onClick={onClose}>Hủy</button>

@@ -126,23 +126,19 @@ const ManageBusRouteScreen = () => {
       ...prev,
       [timeFrame]: !prev[timeFrame],
     }));
-    // Không cần gọi handleFilter ở đây nữa, useEffect sẽ tự động gọi nó khi selectedTimeFrames thay đổi
   };
   
 
   return (
     <div className={styles.container}>
-      {/* Back Button */}
       <div className={styles.backIcon}>
         <Button onClick={() => navigate(-1)}>
           <ArrowBackIosIcon />
         </Button>
       </div>
 
-      {/* Title */}
       <div className={styles.title}>QUẢN LÝ TUYẾN XE</div>
 
-      {/* Filters */}
       <Box className={styles.filter}>
         <TextField
           label="Tìm theo tuyến"
@@ -192,7 +188,6 @@ const ManageBusRouteScreen = () => {
 </Box>
 
 
-      {/* Results Table */}
       {results.length > 0 ? (
         <TableContainer
           component={Paper}
@@ -236,7 +231,6 @@ const ManageBusRouteScreen = () => {
         <p>Không tìm thấy dữ liệu.</p>
       )}
 
-      {/* Modals */}
       <AddAccountModal open={isAddModalOpen} onClose={() => setAddModalOpen(false)} />
       <ActionModal
         open={isActionModalOpen}

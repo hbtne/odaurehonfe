@@ -32,24 +32,24 @@ const EditAccountModal = ({ open, onClose, selectedAccount }) => {
     status: "",
   });
 
-  // Khi modal mở, tải dữ liệu từ API
   useEffect(() => {
     if (selectedAccount && open) {
+      console.log(selectedAccount)
       axios
         .get(`http://localhost:5278/api/account/${selectedAccount.accountID}`)
         .then((response) => {
           setFormData({
-            name: response.data.name || "",
-            gender: response.data.gender || "",
-            accountID: response.data.accountID || "",
-            phoneNumber: response.data.phoneNumber || "",
-            userName: response.data.userName || "",
-            password: response.data.password || "",
-            userType: mapRole(response.data.userType) || "Customer",
-            address: response.data.address || "",
-            hireDate: response.data.hireDate || "",
-            licenseNumber: response.data.licenseNumber || "",
-            status: response.data.status || "",
+            name: selectedAccount.name || "",
+            gender: selectedAccount.gender || "",
+            accountID: selectedAccount.accountID || "",
+            phoneNumber: selectedAccount.phoneNumber || "",
+            userName: selectedAccount.userName || "",
+            password: selectedAccount.password || "",
+            userType: mapRole(selectedAccount.userType) || "Customer",
+            address: selectedAccount.address || "",
+            hireDate: selectedAccount.hireDate || "",
+            licenseNumber: selectedAccount.licenseNumber || "",
+            status: selectedAccount.status || "",
           });
         })
         .catch((error) => {

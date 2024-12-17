@@ -1,45 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box,Button, Table, TableBody, TableCell, TableContainer, TableHead,TableRow,  Paper, TextField} from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate } from "react-router-dom";
 import styles from "./ViewScheduleScreen.module.css";
+import axios from "axios";
 
 const ViewScheduleScreen = () => {
   const navigate = useNavigate();
-  const [results, setResults] = useState([
-    {
-      busId: "OD143267",
-      busRouteId: "A15",
-      departure: "Bến xe Miền Tây",
-      destination: "VP Thốt Nốt",
-      departureTime: "2024-12-09T13:30",
-      duration: "4 tiếng",
-      licensePlate: "55A0 - 435.89",
-      status: "Đã hoàn thành",
-    },
-    {
-      busId: "OD143268",
-      busRouteId: "B10",
-      departure: "Bến xe Miền Đông",
-      destination: "VP Cần Thơ",
-      departureTime: "2024-12-10T14:00",
-      duration: "5 tiếng",
-      licensePlate: "66B1 - 789.12",
-      status: "Chưa khởi hành",
-    },
-   
-  ]);
-
+  const [results, setResults] = useState([]);
   const [filterDate, setFilterDate] = useState("");
+  const accountId = localStorage.getItem("accountId");
+  const fetchSchedule = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5278/api/driver/schedule/${accountId}`);
+      setResults(response.data);
+      console.log(response.data)
+    } catch (error) {
+      console.error("Error fetching schedule:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSchedule();
+  }, [accountId]);
+  
 
   const handleFilter = () => {
     if (filterDate) {
-      const filteredResults = results.filter((ticket) =>
-        ticket.departureTime.startsWith(filterDate)
-      );
+      const filteredResults = results.filter((ticket) => {
+        const departureDate = new Date(ticket.departureTime).toLocaleDateString("en-GB"); 
+        return departureDate === filterDate; 
+      });
       setResults(filteredResults);
     }
   };
+  
 
   return (
     <div className={styles.container}>
@@ -51,15 +46,16 @@ const ViewScheduleScreen = () => {
       <div className={styles.title}>LỊCH TRÌNH</div>
 
       <Box className={styles.filter}>
-        <TextField
+      <TextField
           label="Chọn ngày"
           type="date"
           InputLabelProps={{
             shrink: true,
           }}
-          onChange={(e) => setFilterDate(e.target.value)}
+          onChange={(e) => setFilterDate(e.target.value)} 
           sx={{ width: "200px" }}
         />
+
         <Button 
         sx={{ color:"#ffffff",
             backgroundColor:"#D7987D",
