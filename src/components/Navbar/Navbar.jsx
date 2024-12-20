@@ -40,6 +40,9 @@ const Navbar = () => {
                 <Link to="/customer/lookupticket" className={styles.tchuContainer}>
                     <text className={styles.text}>TRA CỨU VÉ</text>
                 </Link>
+                <Link to="/customer/bookinghistory" className={styles.tchuContainer}>
+                    <text className={styles.text}>LỊCH SỬ</text>
+                </Link>
                 <Link to="/customer/contact" className={styles.tchuContainer}>
                     <text className={styles.text}>LIÊN HỆ</text>
                 </Link>

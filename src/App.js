@@ -27,7 +27,9 @@ import ForgotPass_Pin from './screens/Auth/ForgetPassword/ForgetPass_Pin';
 import ForgotPass_RePass from './screens/Auth/ForgetPassword/ForgotPass_RePass';
 import Promtion from './screens/Admin/Promotion/managePromotiontScreen';
 import Report from './screens/Admin/Report/ReportScreen';
-
+import ChooseRouteChange from './screens/Customer/chooseRouteChange/chooseRouteChange';
+import Notification from './screens/TicketClerk/NotificationList/NotificationList'
+import ChangeTicket from './screens/TicketClerk/ChangeTicket/ChangeTicket';
 function CustomerLayout() {
   return (
     <>
@@ -35,6 +37,7 @@ function CustomerLayout() {
       <Routes>
         <Route path="/mainCus" element={<MainScreenCus />} />
         <Route path="/searchScreen" element={<SearchRouteScreen />} />
+        <Route path="/chooseRouteChange/:ticketId" element={<ChooseRouteChange />} />
         <Route path="/chooseseat1way/:busBusRouteID" element={<ChooseSeat_1way />} />
         <Route path="/chooseseatround/:busBusRouteDepartureID/:busBusRouteReturnID" element={<ChooseSeat_round />} />
         <Route path="/fillinfor1way" element={<FillInfor_1way />} />
@@ -70,8 +73,11 @@ function TicketClerkLayout() {
       <NavbarTicketClerk />
       <Routes>
       <Route path="/searchScreen" element={<SearchRouteScreen />} />
+      <Route path="/changeTicket/:notificationId" element={<ChangeTicket />} />
 
         <Route path="/lookupticketstaff" element={<LookUpTicketstaf />} />
+        <Route path="/notification" element={<Notification/>} />
+
       </Routes>
       <Footer />
     </>

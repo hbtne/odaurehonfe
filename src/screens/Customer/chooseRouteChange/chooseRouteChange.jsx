@@ -1,37 +1,34 @@
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box } from '@mui/material';
-import styles from './searchScreen.module.css';
+import styles from './chooseRouteChange.module.css';
 import CarDriver from '../../../assets/img/carDriver.svg';
 import IOSSwitch from '../../../components/switch.jsx';
 import SwapIcon from '../../../assets/icons/swap-icon.js';
 import AdjustIcon from '@mui/icons-material/Adjust';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const SearchScreen = () => {
+const ChooseRouteChange = () => {
     const [selectedDeparture, setSelectedDeparture] = useState(null);
-const [selectedReturn, setSelectedReturn] = useState(null);
+    const [selectedReturn, setSelectedReturn] = useState(null);
     const [checked, setChecked] = useState(false);
     const [schedules, setSchedules] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { ticketId } = useParams();  
 
-    const handleChange = (event) => {
-        setChecked(event.target.checked);
-    };
 
     useEffect(() => {
         const fetchSchedules = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('http://localhost:5278/api/bookticket/bus-bus-routes');
+                const response = await axios.get(`http://localhost:5278/api/bookticket/bus-bus-routes-with-ticket-price/${ticketId}`);
                 console.log(response.data);
-    
+
                 const data = response.data.map(route => {
                     const buses = route.bus ? [route.bus] : [{ seatsAvailable: 0, pricePerSeat: 0 }];
-    
+                    
                     return buses.map(bus => ({
                         routeName: `${route.departPlace} - ${route.arrivalPlace}`,
                         departureTime: formatTime(route.departureTime),
@@ -44,8 +41,8 @@ const [selectedReturn, setSelectedReturn] = useState(null);
                         busBusRouteID: route.busBusRouteID,
                     }));
                 }).flat();
-    
-                setSchedules(data);
+
+                setSchedules(data);  
             } catch (error) {
                 setError('Không thể tải lịch trình. Vui lòng thử lại sau.');
                 console.error('Error fetching schedules:', error);
@@ -53,10 +50,9 @@ const [selectedReturn, setSelectedReturn] = useState(null);
                 setLoading(false);
             }
         };
-    
+
         fetchSchedules();
-    }, []);
-    
+    }, [ticketId]);
 
     const calculateArrivalTime = (departureTime, duration) => {
         if (typeof duration !== 'string') {
@@ -76,76 +72,24 @@ const [selectedReturn, setSelectedReturn] = useState(null);
         const date = new Date(time);
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
-    const handleSelectBus = (busBusRouteID, isReturn = false) => {
-        if (!checked) {
-            navigate(`/customer/chooseseat1way/${busBusRouteID}`);
-        } else {
-            if (!isReturn && !selectedDeparture) {
-                setSelectedDeparture(busBusRouteID);
-            } else if (isReturn && selectedDeparture && !selectedReturn) {
-                setSelectedReturn(busBusRouteID);
-                navigate(`/customer/chooseseatround/${selectedDeparture}/${busBusRouteID}`);
-            } else {
-                console.warn('Chuyến đã được chọn, không thể chọn lại.');
+
+    const handleSelectBus = async (busBusRouteID) => {
+        try {
+            console.log(busBusRouteID);
+            const response = await axios.post(`http://localhost:5278/change-ticket-request/${ticketId}/${busBusRouteID}`);
+
+            if (response.status === 200) {
+                alert('Gui yeu cau thành công');              
             }
+        } catch (error) {
+            console.error('Error selecting bus:', error);
+            alert('Có lỗi xảy ra. Vui lòng thử lại.');
         }
     };
-    
 
     return (
         <div className={styles.container}>
-            <Box className={styles.linear} />
-            <img src={CarDriver} alt="standing guy" className={styles.img} />
-            <Box className={styles.boxDatve}>
-                <div className={styles.textDatve}>ĐẶT VÉ NGAY</div>
-            </Box>
-            <Box className={styles.box1}>
-                <Box className={styles.boxTim}>
-                    <Box className={styles.boxKhuhoi}>
-                        <div className={styles.text}>Khứ hồi</div>
-                        <IOSSwitch
-                            className={styles.swi}
-                            checked={checked}
-                            onChange={handleChange}
-                            inputProps={{ 'aria-label': 'custom switch' }}
-                        />
-                    </Box>
-                    <div className={styles.fieldContainer}>
-                        <div className={styles.field}>
-                            <label htmlFor="departure" className={styles.text}>Điểm đi</label>
-                            <input type="text" id="departure" className={styles.inputField} />
-                        </div>
-                        <div className={styles.swap}><SwapIcon /></div>
-                        <div className={styles.field}>
-                            <label htmlFor="arrival" className={styles.text}>Điểm đến</label>
-                            <input type="text" id="arrival" className={styles.inputField} />
-                        </div>
-                        <div className={styles.field}>
-                            <label htmlFor="departureDate" className={styles.text}>Ngày đi</label>
-                            <input
-                                type="date"
-                                id="departureDate"
-                                className={`${styles.inputField} ${checked ? styles.inputField1 : ''}`}
-                            />
-                        </div>
-                        {checked && (
-                            <div className={styles.field}>
-                                <label htmlFor="returnDate" className={styles.text}>Ngày về</label>
-                                <input type="date" id="returnDate" className={styles.inputField1} />
-                            </div>
-                        )}
-                        <div className={styles.field}>
-                            <label htmlFor="ticketNumber" className={styles.text}>Số vé</label>
-                            <input type="number" id="ticketNumber" className={styles.inputField} />
-                        </div>
-                    </div>
-                </Box>
-                <div className={styles.buttonContainer}>
-                    <button className={styles.searchButton}>Tìm chuyến xe</button>
-                </div>
-            </Box>
-
-            <div className={styles.titleLoc}>Lọc</div>
+           
             <div className={styles.scheduleSection}>
                 {loading ? (
                     <div>Đang tải...</div>
@@ -176,8 +120,10 @@ const [selectedReturn, setSelectedReturn] = useState(null);
                             </div>
                             <button
                                 className={styles.selectButton}
-                                onClick={() => handleSelectBus(schedule.busBusRouteID, checked && selectedDeparture)}>
+                                onClick={() => handleSelectBus(schedule.busBusRouteID)} >
                                 Chọn chuyến
+                             
+
                             </button>
 
                         </div>
@@ -190,4 +136,4 @@ const [selectedReturn, setSelectedReturn] = useState(null);
     );
 };
 
-export default SearchScreen;
+export default ChooseRouteChange;

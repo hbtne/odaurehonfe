@@ -1,13 +1,20 @@
-import React from "react";
+
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import styles from "./HistoryBookingScreen.module.css";
+import { useNavigate } from 'react-router-dom';
 
 const TicketDetails = ({ ticket }) => (
   <Box className={styles.ticketDetails}>
     <div className={styles.row}>
       <span className={styles.label}>Mã vé:</span>
       <span className={styles.value}>{ticket.ticketId}</span>
+    </div>
+    <div className={styles.row}>
+      <span className={styles.label}>Giá vé:</span>
+      <span className={styles.value}>{ticket.price}</span>
     </div>
     <div className={styles.row}>
       <span className={styles.label}>Số ghế:</span>
@@ -33,66 +40,101 @@ const TicketDetails = ({ ticket }) => (
       <span className={styles.label}>Biển số xe:</span>
       <span className={styles.value}>{ticket.licensePlate}</span>
     </div>
+    <div className={styles.row}>
+      <span className={styles.label}>Tình trạng:</span>
+      <span className={styles.value}>{ticket.status}</span>
+    </div>
   </Box>
 );
 
-const TicketActions = () => (
-  <div className={styles.conbut}>
+const TicketActions = ({ ticket }) => {
+  const navigate = useNavigate();
 
-    <div className={styles.cancelButton}>
-      <Button
-        variant="contained"
-        sx={{
-          backgroundColor: "#D7987D",
-          borderRadius: "25px",
-        }}
-      >
-        Đổi vé
-      </Button>
-    </div>
+  const handleCancel = async () => {
+    try {
+      const response = await axios.delete(`http://localhost:5278/cancel-ticket/${ticket.ticketId}`);
+      if (response.data.message) {
+        alert(response.data.message); 
+      }
+    } catch (error) {
+      alert("Error canceling ticket: " + error.message);
+    }
+  };
 
-    <div className={styles.cancelButton}>
-      <Button
-        variant="contained"
-        color="error"
-        sx={{
-          borderRadius: "25px",
-        }}
-      >
-        Hủy vé
-      </Button>
+  const handleChangeTicket = () => {
+    navigate(`/customer/chooseRouteChange/${ticket.ticketId}`);
+  };
+  return (
+    <div className={styles.conbut}>
+      <div className={styles.cancelButton}>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "#D7987D",
+            borderRadius: "25px",
+          }}
+          onClick={handleChangeTicket}
+        >
+          Đổi vé
+        </Button>
+      </div>
+
+      <div className={styles.cancelButton}>
+        <Button
+          variant="contained"
+          color="error"
+          sx={{
+            borderRadius: "25px",
+          }}
+          onClick={handleCancel}
+        >
+          Hủy vé
+        </Button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
 
 const HistoryBookingScreen = () => {
-  const results = [
-    {
-      ticketId: "OD143267",
-      seatNumber: "A15",
-      departure: "Bến xe Miền Tây",
-      destination: "VP Thốt Nốt",
-      departureTime: "13:30 9/12/2024",
-      busNumber: "79",
-      licensePlate: "55A0 - 435.89",
-      status: "Đã thanh toán",
-    },
-    {
-      ticketId: "OD143268",
-      seatNumber: "B10",
-      departure: "Bến xe Miền Tây",
-      destination: "VP Thốt Nốt",
-      departureTime: "14:00 10/12/2024",
-      busNumber: "80",
-      licensePlate: "56B0 - 123.45",
-      status: "Đã khởi hành",
-    },
-  ];
+  
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const recentTickets = results.filter((ticket) => ticket.status !== "Đã khởi hành");
-  const departedTickets = results.filter((ticket) => ticket.status === "Đã khởi hành");
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        setLoading(true);
+        const accountId = localStorage.getItem("accountId");
+        const response = await axios.get(
+          `http://localhost:5278/booked-tickets/${accountId}`
+        );
+        setResults(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError("Không thể lấy dữ liệu lịch sử đặt vé.");
+        setLoading(false);
+      }
+    };
 
-  return (
+    fetchTickets();
+  }, []);
+
+  const recentTickets = results.filter((ticket) => ticket.isDeparted === "Chưa khởi hành");
+  const departedTickets = results.filter((ticket) => ticket.isDeparted === "Đã khởi hành");
+
+  if (loading) {
+    return <Typography>Đang tải dữ liệu...</Typography>;
+  }
+
+  if (error) {
+    return <Typography style={{ textAlign: "center", marginTop: "20px", color: "red" }}>
+      {error}
+    </Typography>;
+  }
+
+    return (
     <div className={styles.container}>
       <div className={styles.backIcon}>
         <Button>
@@ -125,8 +167,8 @@ const HistoryBookingScreen = () => {
                 }}
               >
                 <CardContent>
-                  <TicketDetails ticket={ticket} />
-                  <TicketActions />
+                <TicketDetails ticket={ticket} />
+                <TicketActions ticket={ticket} />
                 </CardContent>
               </Card>
             ))}
