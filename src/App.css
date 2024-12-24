@@ -2,7 +2,7 @@
 .App {
   display: flex;
   flex-direction: column;
-  min-height: 200vh; 
+  min-height: 300vh; 
 }
 
 main {

@@ -5,47 +5,65 @@ import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import styles from "./HistoryBookingScreen.module.css";
 import { useNavigate } from 'react-router-dom';
+import { format } from "date-fns";
 
-const TicketDetails = ({ ticket }) => (
-  <Box className={styles.ticketDetails}>
-    <div className={styles.row}>
-      <span className={styles.label}>Mã vé:</span>
-      <span className={styles.value}>{ticket.ticketId}</span>
-    </div>
-    <div className={styles.row}>
-      <span className={styles.label}>Giá vé:</span>
-      <span className={styles.value}>{ticket.price}</span>
-    </div>
-    <div className={styles.row}>
-      <span className={styles.label}>Số ghế:</span>
-      <span className={styles.value}>{ticket.seatNumber}</span>
-    </div>
-    <div className={styles.row}>
-      <span className={styles.label}>Nơi đi:</span>
-      <span className={styles.value}>{ticket.departure}</span>
-    </div>
-    <div className={styles.row}>
-      <span className={styles.label}>Nơi đến:</span>
-      <span className={styles.value}>{ticket.destination}</span>
-    </div>
-    <div className={styles.row}>
-      <span className={styles.label}>Giờ khởi hành:</span>
-      <span className={styles.value}>{ticket.departureTime}</span>
-    </div>
-    <div className={styles.row}>
-      <span className={styles.label}>Số xe:</span>
-      <span className={styles.value}>{ticket.busNumber}</span>
-    </div>
-    <div className={styles.row}>
-      <span className={styles.label}>Biển số xe:</span>
-      <span className={styles.value}>{ticket.licensePlate}</span>
-    </div>
-    <div className={styles.row}>
-      <span className={styles.label}>Tình trạng:</span>
-      <span className={styles.value}>{ticket.status}</span>
-    </div>
-  </Box>
-);
+const TicketDetails = ({ ticket }) => {
+  const departureDate = new Date(ticket.departureTime);
+
+  const hours = departureDate.getHours();
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
+  const formattedMinutes = departureDate.getMinutes().toString().padStart(2, '0');
+
+  const formattedDepartureTime = `
+    ${formattedHours}:${formattedMinutes} ${period} 
+    ngày 
+    ${departureDate.getDate().toString().padStart(2, '0')}/
+    ${(departureDate.getMonth() + 1).toString().padStart(2, '0')}/
+    ${departureDate.getFullYear()}
+  `.trim().replace(/\s+/g, ' '); 
+  return (
+    <Box className={styles.ticketDetails}>
+      <div className={styles.row}>
+        <span className={styles.label}>Mã vé:</span>
+        <span className={styles.value}>{ticket.ticketId}</span>
+      </div>
+      <div className={styles.row}>
+        <span className={styles.label}>Giá vé:</span>
+        <span className={styles.value}>{ticket.price}</span>
+      </div>
+      <div className={styles.row}>
+        <span className={styles.label}>Số ghế:</span>
+        <span className={styles.value}>{ticket.seatNumber}</span>
+      </div>
+      <div className={styles.row}>
+        <span className={styles.label}>Nơi đi:</span>
+        <span className={styles.value}>{ticket.departure}</span>
+      </div>
+      <div className={styles.row}>
+        <span className={styles.label}>Nơi đến:</span>
+        <span className={styles.value}>{ticket.destination}</span>
+      </div>
+      <div className={styles.row}>
+        <span className={styles.label}>Giờ khởi hành:</span>
+        <span className={styles.value}>{formattedDepartureTime}</span>
+      </div>
+      <div className={styles.row}>
+        <span className={styles.label}>Số xe:</span>
+        <span className={styles.value}>{ticket.busNumber}</span>
+      </div>
+      <div className={styles.row}>
+        <span className={styles.label}>Biển số xe:</span>
+        <span className={styles.value}>{ticket.licensePlate}</span>
+      </div>
+      <div className={styles.row}>
+        <span className={styles.label}>Tình trạng:</span>
+        <span className={styles.value}>{ticket.status}</span>
+      </div>
+    </Box>
+  );
+};
+
 
 const TicketActions = ({ ticket }) => {
   const navigate = useNavigate();

@@ -8,7 +8,10 @@ import NavbarDriver from './components/Navbar/NavbarDriver';
 import Footer from './components/Footer/Footer';
 import MainScreenCus from './screens/Customer/main/mainScreen_Cus'; 
 import SearchRouteScreen from './screens/Customer/search/searchScreen';
+import SearchRouteScreen_clerk from './screens/TicketClerk/search/searchScreen';
 import ChooseSeat_1way from './screens/Customer/chooseSeatScreen/chooseSeatScreen1way';
+import ChooseSeat_round_clerk from './screens/TicketClerk/chooseSeatScreen/chooseSeatScreenround';
+import ChooseSeat_1way_clerk from './screens/TicketClerk/chooseSeatScreen/chooseSeatScreen1way';
 import ChooseSeat_round from './screens/Customer/chooseSeatScreen/chooseSeatScreenround';
 import FillInfor_1way from './screens/Customer/fillInfor/fillInforScreen1way';
 import FillInfor_round from './screens/Customer/fillInfor/fillInforScreenround';
@@ -72,9 +75,10 @@ function TicketClerkLayout() {
     <>
       <NavbarTicketClerk />
       <Routes>
-      <Route path="/searchScreen" element={<SearchRouteScreen />} />
-      <Route path="/changeTicket/:notificationId" element={<ChangeTicket />} />
-
+        <Route path="/searchScreen" element={<SearchRouteScreen_clerk />} />
+        <Route path="/changeTicket/:notificationId" element={<ChangeTicket />} />
+        <Route path="/chooseseat1way/:busBusRouteID" element={<ChooseSeat_1way_clerk />} />
+        <Route path="/chooseseatround/:busBusRouteDepartureID/:busBusRouteReturnID" element={<ChooseSeat_round_clerk />} />
         <Route path="/lookupticketstaff" element={<LookUpTicketstaf />} />
         <Route path="/notification" element={<Notification/>} />
 

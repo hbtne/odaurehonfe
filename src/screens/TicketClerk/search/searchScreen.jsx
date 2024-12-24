@@ -84,13 +84,13 @@ const [selectedReturn, setSelectedReturn] = useState(null);
     };
     const handleSelectBus = (busBusRouteID, isReturn = false) => {
         if (!checked) {
-            navigate(`/customer/chooseseat1way/${busBusRouteID}`);
+            navigate(`/ticketclerk/chooseseat1way/${busBusRouteID}`);
         } else {
             if (!isReturn && !selectedDeparture) {
                 setSelectedDeparture(busBusRouteID);
             } else if (isReturn && selectedDeparture && !selectedReturn) {
                 setSelectedReturn(busBusRouteID);
-                navigate(`/customer/chooseseatround/${selectedDeparture}/${busBusRouteID}`);
+                navigate(`/ticketclerk/chooseseatround/${selectedDeparture}/${busBusRouteID}`);
             } else {
                 console.warn('Chuyến đã được chọn, không thể chọn lại.');
             }
@@ -99,7 +99,7 @@ const [selectedReturn, setSelectedReturn] = useState(null);
     
 
     const handleSearch = async () => {
-        let formattedDepartureDate = searchParams.departureDate || null; // Lấy giá trị ngày khởi hành
+        let formattedDepartureDate = searchParams.departureDate || null; 
      
         setLoading(true);
         setError('');

@@ -17,16 +17,15 @@ import {
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate } from "react-router-dom";
 import styles from "./manageBusRouteScreen.module.css";
-import AddAccountModal from "./modalAdd"; // Modal Thêm tuyến
-import ActionModal from "./modalAction"; // Modal Hành động
-import DeleteModal from "./modalDelete"; // Modal Xóa
-import EditModal from "./modalEdit"; // Modal Chỉnh sửa
+import AddAccountModal from "./modalAdd"; 
+import ActionModal from "./modalAction"; 
+import DeleteModal from "./modalDelete"; 
+import EditModal from "./modalEdit"; 
 import axios from "axios";
 
 const ManageBusRouteScreen = () => {
   const navigate = useNavigate();
 
-  // States
   const [results, setResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isAddModalOpen, setAddModalOpen] = useState(false);
@@ -34,22 +33,20 @@ const ManageBusRouteScreen = () => {
   const [isActionModalOpen, setActionModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [selectedTimeFrames, setSelectedTimeFrames] = useState({
-    "0:00 - 6:00": false,
-    "6:00 - 12:00": false,
-    "12:00 - 18:00": false,
-    "18:00 - 0:00": false,
-  });
+  // const [selectedTimeFrames, setSelectedTimeFrames] = useState({
+  //   "0:00 - 6:00": false,
+  //   "6:00 - 12:00": false,
+  //   "12:00 - 18:00": false,
+  //   "18:00 - 0:00": false,
+  // });
 
-  // Fetch bus routes
+  
   const fetchBusRoutes = async () => {
     try {
       const response = await axios.get("http://localhost:5278/api/busroute", {
         params: {
-          searchQuery,
-          timeFrames: Object.keys(selectedTimeFrames).filter(
-            (key) => selectedTimeFrames[key]
-          ),
+          searchQuery
+         
         },
       });
       setResults(response.data);
@@ -59,28 +56,22 @@ const ManageBusRouteScreen = () => {
   };
 
   const handleFilter = async () => {
+    console.log("Searching for:", searchQuery); 
     try {
-      const timeFrames = Object.keys(selectedTimeFrames).filter(
-        (key) => selectedTimeFrames[key]
-      );
-      console.log("Send timeFrames:", timeFrames);
       const response = await axios.get("http://localhost:5278/api/busroute", {
-        params: {
-          searchQuery,
-          timeFrames, // Gửi danh sách timeFrames được chọn
-        },
+        params: { searchQuery: searchQuery }
       });
-  
-      setResults(response.data); // Cập nhật kết quả sau khi lọc
+      
+      setResults(response.data); 
     } catch (error) {
       console.error("Error filtering bus routes:", error);
     }
   };
   
+  
 
   
 
-  // Handle row click for action modal
   const handleRowClick = (busRoute) => {
     setSelectedBusRoute(busRoute);
     setActionModalOpen(true);
@@ -92,11 +83,10 @@ const ManageBusRouteScreen = () => {
         route.busRouteID === updatedRoute.busRouteID ? updatedRoute : route
       )
     );
-    setEditModalOpen(false); // Close modal after update
-    fetchBusRoutes();
+    setEditModalOpen(false); 
   };
 
-  // Handle delete action
+ 
   const handleDelete = async () => {
     try {
       await axios.delete(
@@ -113,20 +103,18 @@ const ManageBusRouteScreen = () => {
       console.error("Error deleting bus route:", error);
     }
   };
-
   useEffect(() => {
-    handleFilter();
     fetchBusRoutes();
-  }, [selectedTimeFrames]);
-
+  }, [searchQuery]);
   
-  const handleTimeFrameChange = (timeFrame) => {
-    console.log("Selected timeFrames:", timeFrame);
-    setSelectedTimeFrames((prev) => ({
-      ...prev,
-      [timeFrame]: !prev[timeFrame],
-    }));
-  };
+  
+  // const handleTimeFrameChange = (timeFrame) => {
+  //   console.log("Selected timeFrames:", timeFrame);
+  //   setSelectedTimeFrames((prev) => ({
+  //     ...prev,
+  //     [timeFrame]: !prev[timeFrame],
+  //   }));
+  // };
   
 
   return (
@@ -171,7 +159,7 @@ const ManageBusRouteScreen = () => {
         </Button>
       </Box>
 
-      <Box className={styles.timeFilter}>
+      {/* <Box className={styles.timeFilter}>
   <strong>Khung thời gian</strong>
   {Object.keys(selectedTimeFrames).map((timeFrame) => (
     <FormControlLabel
@@ -185,7 +173,7 @@ const ManageBusRouteScreen = () => {
       label={timeFrame}
     />
   ))}
-</Box>
+</Box> */}
 
 
       {results.length > 0 ? (

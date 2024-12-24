@@ -244,24 +244,24 @@ border-radius: 20px;
 
 /* Schedule section styles */
 .scheduleSection {
-/* Frame 59 */
-
-/* Auto layout */
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-padding: 10px;
-gap: 36px;
-
-position: absolute;
-width: 1029px;
-height: 766px;
-left: calc(50% - 1029px/2 + 174.5px);
-top: 989px;
-overflow-y: scroll;
-
-
-}
+    /* Frame 59 */
+    
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    gap: 36px;
+    
+    position: absolute;
+    width: 1029px;
+    height: 766px;
+    left: 270px;
+    top: 989px;
+    overflow-y: scroll;
+    
+    
+    }
 
 .scheduleSection h2 {
     font-size: 24px;
