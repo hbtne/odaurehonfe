@@ -33,6 +33,8 @@ const AddModal = ({ open, onClose }) => {
         busRouteId: formData.busRouteId,
         departPlace: formData.departPlace,
         arrivalPlace: formData.arrivalPlace,
+        departStation: formData.departStation,
+        arrivalStation: formData.arrivalStation,
         departureTime: formData.departureTime ? formData.departureTime.toISOString() : null, 
         duration: formData.duration,
         pricePerSeat: formData.pricePerSeat,
@@ -47,6 +49,8 @@ const AddModal = ({ open, onClose }) => {
         departPlace: "",
         arrivalPlace: "",
         departureTime: null,
+        departStation: "",
+        arrivalStation: "",
         duration: "",
         pricePerSeat:"",
         pricePerSeatVip:"",
@@ -84,10 +88,27 @@ const AddModal = ({ open, onClose }) => {
           fullWidth
           margin="normal"
         />
-        <TextField
+       
+            <TextField
+          label="Trạm đi"
+          name="departStation"
+          value={formData.departStation}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+        />
+           <TextField
           label="Điểm đến"
           name="arrivalPlace"
           value={formData.arrivalPlace}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+        />
+         <TextField
+          label="Trạm đến"
+          name="arrivalStation"
+          value={formData.arrivalStation}
           onChange={handleChange}
           fullWidth
           margin="normal"

@@ -37,40 +37,34 @@ const ManagebusScreen = () => {
   useEffect(() => {
     const fetchBuses = async () => {
       try {
-        const response = await axios.get("http://localhost:5278/api/bus"); 
-        console.log(response.data); 
+        const response = await axios.get("http://localhost:5278/api/bus", {
+          params: {
+            filterType,
+            searchQuery,
+          },
+        });
+        console.log(filterType,
+          searchQuery);
         setResults(response.data);
       } catch (error) {
         console.error("Error fetching bus data", error);
       }
     };
-    
+  
     fetchBuses();
-  }, []);
-
+  }, [filterType, searchQuery]);  
+  
   const handleFilter = () => {
-    let filteredResults = results;
-    if (filterType) {
-      filteredResults = filteredResults.filter((bus) => bus.type === filterType);
-    }
-
-    if (searchQuery) {
-      filteredResults = filteredResults.filter(
-        (bus) =>
-          bus.busRouteId.includes(searchQuery) ||
-          bus.busId.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-    setResults(filteredResults);
+    console.log(filterType);
   };
-
+  
   const handleRowClick = (bus) => {
     setSelectedBus(bus);
     setActionModalOpen(true);
   };
 
   const handleDelete = () => {
-    axios.delete(`http://localhost:5278/api/bus/${selectedBus.busID}`)  // Send DELETE request to backend
+    axios.delete(`http://localhost:5278/api/bus/${selectedBus.busID}`) 
       .then(() => {
         setResults(results.filter((bus) => bus.busId !== selectedBus.busID));
         setDeleteModalOpen(false);
@@ -91,16 +85,17 @@ const ManagebusScreen = () => {
       <div className={styles.title}>QUẢN LÝ XE</div>
 
       <Box className={styles.filter}>
-        <Select
+        {/* <Select
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
           displayEmpty
           sx={{ width: "200px", marginRight: "16px" }}
+
         >
           <MenuItem value="">Tất cả loại</MenuItem>
-          <MenuItem value="Xe thường">Xe thường</MenuItem>
-          <MenuItem value="Xe VIP">Xe VIP</MenuItem>
-        </Select>
+          <MenuItem value="Thường">Xe thường</MenuItem>
+          <MenuItem value="VIP">Xe VIP</MenuItem>
+        </Select> */}
         <TextField
           label="Tìm theo xe"
           onChange={(e) => setSearchQuery(e.target.value)}

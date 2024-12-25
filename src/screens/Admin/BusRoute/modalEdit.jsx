@@ -149,6 +149,8 @@ const EditModal = ({ open, onClose, selectedRoute, onRouteUpdate }) => {
         busRouteId: selectedRoute.busRouteID,
         departPlace: selectedRoute.departPlace,
         arrivalPlace: selectedRoute.arrivalPlace,
+        departStation: selectedRoute.departStation,
+        arrivalStation: selectedRoute.arrivalStation,
         departureTime: selectedRoute.departureTime ? new Date(selectedRoute.departureTime) : null, 
         duration: selectedRoute.duration,
         pricePerSeat: selectedRoute.pricePerSeat,
@@ -220,6 +222,22 @@ const EditModal = ({ open, onClose, selectedRoute, onRouteUpdate }) => {
           label="Điểm đến"
           name="arrivalPlace"
           value={formData.arrivalPlace}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+        />
+                <TextField
+          label="Trạm đi"
+          name="departStation"
+          value={formData.departStation}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Trạm đến"
+          name="arrivalStation"
+          value={formData.arrivalStation}
           onChange={handleChange}
           fullWidth
           margin="normal"

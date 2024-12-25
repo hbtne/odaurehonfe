@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import styles from './lookUpTicket.module.css';
-import { Box, Button } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import axios from 'axios';
 
 const LookUpTicketScreen = () => {
-  const [phone, setPhone] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [ticketCode, setTicketCode] = useState('');
   const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
 
-  const handleLookup = () => {
-    setResult({
-      ticketCode: 'OD143267',
-      seatNumber: 'A15',
-      departure: 'Bến xe Miền Tây',
-      destination: 'VP Thốt Nốt',
-      departureTime: '13:30 9/12/2024',
-      busNumber: '79',
-      licensePlate: '55A0 - 435.89',
-    });
+  const handleLookup = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5278/check-ticket/${ticketCode}/${phoneNumber}`);
+      setResult(response.data);  
+      setError(null);  
+    } catch (error) {
+      setError('Không tìm thấy vé hoặc số điện thoại không khớp.');
+      setResult(null); 
+    }
   };
-
  
 
   return (
@@ -36,8 +36,8 @@ const LookUpTicketScreen = () => {
               type="text"
               className={styles.input}
               placeholder="0xx xxx xxxx"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
             />
           </Box>
           <Box className={styles.inputGroup}>
@@ -70,7 +70,7 @@ const LookUpTicketScreen = () => {
            <Box className={styles.ticketDetails}>
   <div className={styles.row}>
     <span className={styles.label}>Mã vé:</span>
-    <span className={styles.value}>{result.ticketCode}</span>
+    <span className={styles.value}>{result.ticketId}</span>
   </div>
   <div className={styles.row}>
     <span className={styles.label}>Số ghế:</span>

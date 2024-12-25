@@ -40,20 +40,23 @@ const ManageBusRouteScreen = () => {
   //   "18:00 - 0:00": false,
   // });
 
-  
-  const fetchBusRoutes = async () => {
-    try {
-      const response = await axios.get("http://localhost:5278/api/busroute", {
-        params: {
-          searchQuery
-         
-        },
-      });
-      setResults(response.data);
-    } catch (error) {
-      console.error("Error fetching bus routes:", error);
-    }
-  };
+   useEffect(() => {
+    const fetchBusRoutes = async () => {
+      try {
+        const response = await axios.get("http://localhost:5278/api/busroute", {
+          params: {
+            searchQuery
+           
+          },
+        });
+        setResults(response.data);
+      } catch (error) {
+        console.error("Error fetching bus routes:", error);
+      }
+    };
+    fetchBusRoutes();
+    }, []);
+
 
   const handleFilter = async () => {
     console.log("Searching for:", searchQuery); 
@@ -103,9 +106,7 @@ const ManageBusRouteScreen = () => {
       console.error("Error deleting bus route:", error);
     }
   };
-  useEffect(() => {
-    fetchBusRoutes();
-  }, [searchQuery]);
+
   
   
   // const handleTimeFrameChange = (timeFrame) => {
@@ -190,6 +191,8 @@ const ManageBusRouteScreen = () => {
                 <TableCell><strong>Quãng thời gian đi </strong></TableCell>
                 <TableCell><strong>Điểm đi</strong></TableCell>
                 <TableCell><strong>Điểm đến</strong></TableCell>
+                <TableCell><strong>Trạm đi</strong></TableCell>
+                <TableCell><strong>Trạm đến</strong></TableCell>
                 <TableCell><strong>Giá vé thường</strong></TableCell>
                 <TableCell><strong>Giá vé vip</strong></TableCell>
 
@@ -208,6 +211,8 @@ const ManageBusRouteScreen = () => {
                   <TableCell>{busRoute.duration}</TableCell>
                   <TableCell>{busRoute.arrivalPlace}</TableCell>
                   <TableCell>{busRoute.departPlace}</TableCell>
+                  <TableCell>{busRoute.arrivalStation}</TableCell>
+                  <TableCell>{busRoute.departStation}</TableCell>
                   <TableCell>{busRoute.pricePerSeat}</TableCell>
                   <TableCell>{busRoute.pricePerSeatVip}</TableCell>
                 </TableRow>
