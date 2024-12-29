@@ -24,36 +24,36 @@ const AddAccountModal = ({ open, onClose }) => {
 
   const handleSubmit = async () => {
     try {
-      // Tạo dữ liệu để gửi đến backend
+    
       const data = {
-        accountID: formData.accountId, // Người dùng nhập vào Account ID
-        userName: formData.email,  // Giả sử email là username
-        status: "active", // Hoặc status mặc định khác
+        accountID: formData.accountId, 
+        userName: formData.email, 
+        status: "active",
         userType: formData.role === "Khách hàng" ? "Customer" :
                  formData.role === "Nhân viên" ? "TicketClerk" : "Driver",
-        password: formData.password, // Gửi password
+        password: formData.password, 
         name: formData.fullName,
         gender: formData.gender,
         phoneNumber: formData.phone,
         
-        // Tùy thuộc vào role, sẽ thêm dữ liệu phù hợp
+      
         ...(formData.role === "Khách hàng" && {
-          address: formData.address, // Chỉ có cho Customer
+          address: formData.address, 
         }),
         ...(formData.role === "Nhân viên" && {
-          hireDate: formData.hireDate, // Chỉ có cho TicketClerk
+          hireDate: formData.hireDate,
         }),
         ...(formData.role === "Tài xế" && {
-          licenseNumber: formData.driverLicense, // Chỉ có cho Driver
+          licenseNumber: formData.driverLicense, 
         }),
       };
   
-      console.log(data);  // Kiểm tra dữ liệu gửi đi
+      console.log(data);  
   
-      // Gửi request đến backend API
+     
       const response = await axios.post("http://localhost:5278/api/account", data);
       console.log("Account created:", response.data);
-      onClose(); // Đóng modal sau khi tạo thành công
+      onClose(); 
     } catch (error) {
       console.error("Có lỗi khi tạo tài khoản:", error);
     }
@@ -87,7 +87,7 @@ const AddAccountModal = ({ open, onClose }) => {
         />
         <TextField
           label="CCCD (Account ID)"
-          name="accountId" // Người dùng nhập vào Account ID
+          name="accountId"
           value={formData.accountId}
           onChange={handleChange}
           fullWidth
@@ -111,7 +111,7 @@ const AddAccountModal = ({ open, onClose }) => {
         />
         <TextField
           label="Mật khẩu"
-          name="password" // Thêm trường mật khẩu
+          name="password" 
           type="password"
           value={formData.password}
           onChange={handleChange}

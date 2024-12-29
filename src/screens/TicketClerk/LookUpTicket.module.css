@@ -19,7 +19,14 @@
     top: 328px;
     
   }
-
+  #ticketContent {
+    width: 100%; /* Đảm bảo không vượt quá chiều rộng trang */
+    max-width: 100%; /* Giới hạn chiều rộng */
+    height: auto; /* Để chiều cao tự điều chỉnh */
+    overflow: hidden; /* Ẩn phần vượt ra ngoài */
+    box-sizing: border-box; /* Đảm bảo padding và border không làm phần tử vượt quá giới hạn */
+  }
+  
   .buttonLookup
   {
  

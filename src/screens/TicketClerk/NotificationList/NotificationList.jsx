@@ -34,15 +34,36 @@ const NotificationList = () => {
 
   const handleConfirm = () => {
     if (selectedNotification) {
-      if (selectedNotification.notificationID) {
-        navigate(`/ticketclerk/changeTicket/${selectedNotification.notificationID}`);
-      } else {
-        console.error('Missing notificationID');
+      if (selectedNotification.message.includes('Request to cancel ticket')) {
+        const notificationId = selectedNotification.notificationID;
+        cancelTicket(notificationId); 
+      } else if (selectedNotification.message.includes('Request to change ticket')) {
+        if (selectedNotification.notificationID) {
+          navigate(`/ticketclerk/changeTicket/${selectedNotification.notificationID}`);
+        } else {
+          console.error('Missing notificationID');
+        }
       }
   
       handleCloseModal();
     }
   };
+  
+  const cancelTicket = async (notificationId) => {
+    try {
+      const response = await axios.delete(`http://localhost:5278/cancel-ticket/${notificationId}`);
+      
+      if (response.status === 200) {
+        console.log(response.data.message);  
+        alert("Ticket has been canceled");
+      } else {
+        console.error('Error canceling ticket:', response.data.error);
+      }
+    } catch (error) {
+      console.error('Error canceling ticket:', error);
+    }
+  };
+  
   
 
   return (

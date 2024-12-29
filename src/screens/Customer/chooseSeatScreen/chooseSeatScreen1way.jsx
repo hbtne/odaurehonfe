@@ -17,7 +17,7 @@ const ChooseSeatScreen1way = () => {
   const [error, setError] = useState('');
   const [bus, setBus] = useState({ type: '' });
 
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchSeats = async () => {
       setLoading(true);
@@ -78,31 +78,28 @@ const ChooseSeatScreen1way = () => {
       alert("Vui lòng chọn ít nhất một ghế trước khi đặt vé.");
       return;
     }
+    navigate('/customer/fillinfor1way', {
+      state: {
+        busBusRouteID: busBusRouteID,
+        CustomerID: parseInt(localStorage.getItem("accountId")),
+        SeatNum: selectedSeats.join(','),
+        Type: bus.type || "Thường",
+        Price: routeData.price,
+      },
+    });
 
-    const bookingData = {
-      BusBusRouteID: busBusRouteID,
-      CustomerID: parseInt(localStorage.getItem("accountId")),
-      SeatNum: selectedSeats.join(','),
-      Type: bus.type || "Thường",
-      Price: routeData.price,
-    };
-    console.log("AccountId in localStorage:", localStorage.getItem("accountId"));
-
-    console.log("CustomerID:", localStorage.getItem("accountId"));
-    console.log("bookingData:", bookingData);
-
-    try {
-      const response = await axios.post('http://localhost:5278/api/bookticket/create-tickets', bookingData);
-      if (response.status === 200) {
-        console.log("Tickets created successfully:", response.data.tickets);
-        alert("Đặt vé thành công!");
-        setSelectedSeats([]);
-        setIsDialogOpen(false);
-      }
-    } catch (error) {
-      console.error("Error creating tickets:", error.response?.data || error.message);
-      alert("Đã xảy ra lỗi khi đặt vé. Vui lòng thử lại.");
-    }
+    // try {
+    //   const response = await axios.post('http://localhost:5278/api/bookticket/create-tickets', bookingData);
+    //   if (response.status === 200) {
+    //     console.log("Tickets created successfully:", response.data.tickets);
+    //     alert("Đặt vé thành công!");
+    //     setSelectedSeats([]);
+    //     setIsDialogOpen(false);
+    //   }
+    // } catch (error) {
+    //   console.error("Error creating tickets:", error.response?.data || error.message);
+    //   alert("Đã xảy ra lỗi khi đặt vé. Vui lòng thử lại.");
+    // }
   };
 
 

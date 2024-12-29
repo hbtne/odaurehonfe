@@ -3,6 +3,9 @@ import styles from './LookUpTicket.module.css';
 import { Box, Button } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import axios from 'axios';
+import { jsPDF } from 'jspdf';
+import html2pdf from 'html2pdf.js';
+import Monsterrat from'../../assets/fonts/MontserratAlternates-Regular.otf'
 
 const LookUpTicketScreen = () => {
 const [phoneNumber, setPhoneNumber] = useState('');
@@ -20,7 +23,53 @@ const [phoneNumber, setPhoneNumber] = useState('');
       setResult(null); 
     }
   };
+  const removeVietnameseTones = (str) => {
+    const vietKey = [
+      'aáàạảãâấầậẩẫăắằặẳẵ',
+      'eéèẹẻẽêếềệểễ',
+      'iíìịỉĩ',
+      'oóòọỏõôốồộổỗơớờợởỡ',
+      'uúùụủũôốồộổỗơớờợởỡ',
+      'yýỳỵỷỹ',
+      'dđ'
+    ];
+    
+    const vietChars = [
+      'a', 'e', 'i', 'o', 'u', 'y', 'd'
+    ];
+  
+    for (let i = 0; i < vietKey.length; i++) {
+      const re = new RegExp('[' + vietKey[i] + ']', 'g');
+      str = str.replace(re, vietChars[i]);
+    }
+  
+    return str;
+  };
+  
 
+  const handlePrintTicket = () => {
+    const noDi = removeVietnameseTones(result.departure);
+    const noDen = removeVietnameseTones(result.destination);
+    const doc = new jsPDF('p', 'mm', 'a6'); 
+    doc.addFileToVFS(" Monsterrat.otf",  Monsterrat);
+
+ 
+  doc.setFont(" Monsterrat");
+   
+    doc.setFontSize(12); 
+  
+    doc.text(`Ma ve: ${result.ticketId}`, 10, 20); 
+    doc.text(`So ghe: ${result.seatNumber}`, 10, 30);
+    doc.text(`Noi di: ${noDi}`, 10, 40);
+    doc.text(`Noi den: ${noDen}`, 10, 50);
+    doc.text(`Gio khoi hanh: ${result.departureTime}`, 10, 60);
+    doc.text(`So xe: ${result.busNumber}`, 10, 70);
+    doc.text(`Bien so xe: ${result.licensePlate}`, 10, 80);
+  
+    doc.save(`ticket-${result.ticketId}.pdf`);
+  };
+  
+  
   return (
     <div className={styles.container}>
       <div className={styles.backIcon}>
@@ -66,7 +115,7 @@ const [phoneNumber, setPhoneNumber] = useState('');
       <h3 className={styles.resultTitle}>KẾT QUẢ TRUY XUẤT</h3>
       {result && (
           <Box className={styles.resultContainer}>
-           <Box className={styles.ticketDetails}>
+           <Box className={styles.ticketDetails} id="ticketContent">
   <div className={styles.row}>
     <span className={styles.label}>Mã vé:</span>
     <span className={styles.value}>{result.ticketId}</span>
@@ -105,6 +154,7 @@ const [phoneNumber, setPhoneNumber] = useState('');
                 backgroundColor:"#2E6B75",
                 borderRadius: '25px', 
               }}
+              onClick={handlePrintTicket}
             > In vé
             </Button>
             </div>

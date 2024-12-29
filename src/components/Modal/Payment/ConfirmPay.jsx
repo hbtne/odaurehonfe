@@ -7,13 +7,17 @@ const ConfirmPay = ({
   onConfirm,
   discount,
   totalPrice,
+  originPrice,
+  onPaymentMethodChange,  
 }) => {
   const [paymentMethod, setPaymentMethod] = useState('VNPay');
 
   if (!isOpen) return null;
 
-  const handlePaymentChange = (e) => setPaymentMethod(e.target.value);
-
+  const handlePaymentChange = (e) => {
+    setPaymentMethod(e.target.value);
+    onPaymentMethodChange(e.target.value);  
+  };
 
   return (
     <div className={styles.backdrop} onClick={onClose}>
@@ -45,11 +49,11 @@ const ConfirmPay = ({
 
         <div className={styles.priceInfo}>
           <span>Giá vé:</span>
-          <span>{totalPrice.toLocaleString()} VND</span>
+          <span>{originPrice.toLocaleString()} VND</span>
         </div>
         <div className={styles.priceInfo}>
           <span>Giảm giá:</span>
-          <span>{discount}</span>
+          <span>{discount} %</span>
         </div>
 
         <hr />

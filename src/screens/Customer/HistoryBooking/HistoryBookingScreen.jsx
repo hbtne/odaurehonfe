@@ -70,12 +70,12 @@ const TicketActions = ({ ticket }) => {
 
   const handleCancel = async () => {
     try {
-      const response = await axios.delete(`http://localhost:5278/cancel-ticket/${ticket.ticketId}`);
+      const response = await axios.post(`http://localhost:5278/cancel-ticket-request/${ticket.ticketId}`);
       if (response.data.message) {
         alert(response.data.message); 
       }
     } catch (error) {
-      alert("Error canceling ticket: " + error.message);
+      alert("Error request canceling ticket: " + error.message);
     }
   };
 

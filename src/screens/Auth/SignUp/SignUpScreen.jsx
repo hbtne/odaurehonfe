@@ -12,7 +12,8 @@ const SignUpScreen = () => {
     name: "",
     gender: "",
     phoneNumber: "",
-    email: "",
+    accountID:"",
+    userName: "",
     address: "",
     password: "",
     confirmPassword: "",
@@ -27,8 +28,9 @@ const SignUpScreen = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.name) newErrors.name = "Họ và tên không được để trống";
+    if (!formData.accountID) newErrors.accountID = "CCCD không được để trống";
     if (!formData.phoneNumber) newErrors.phoneNumber = "Số điện thoại không được để trống";
-    if (!formData.email) newErrors.email = "Email không được để trống";
+    if (!formData.userName) newErrors.userName = "Email không được để trống";
     if (formData.password !== formData.confirmPassword) {
       newErrors.password = "Mật khẩu không khớp";
     }
@@ -46,16 +48,18 @@ const SignUpScreen = () => {
 
     const userData = {
       name: formData.name,
+      accountID:formData.accountID,
       gender: formData.gender,
       phoneNumber: formData.phoneNumber,
-      email: formData.email,
+
       address: formData.address,
       password: formData.password,
       status: "active",  
-      userName: formData.email,  
+      userName: formData.userName,  
       userType: "Customer",  
     };
     try {
+      console.log(userData);
       const response = await axios.post("http://localhost:5278/api/auth/signup", userData);
       console.log("Registration successful:", response.data);
     
@@ -102,9 +106,9 @@ const SignUpScreen = () => {
         onChange={handleInputChange}
         className={styles.input1}
       >
-        <MenuItem value="male">Nam</MenuItem>
-        <MenuItem value="female">Nữ</MenuItem>
-        <MenuItem value="other">Khác</MenuItem>
+        <MenuItem value="Nam">Nam</MenuItem>
+        <MenuItem value="Nữ">Nữ</MenuItem>
+        <MenuItem value="Khác">Khác</MenuItem>
       </Select>
     </Box>
   </Box>
@@ -121,11 +125,23 @@ const SignUpScreen = () => {
     {errors.phoneNumber && <span className={styles.error}>{errors.phoneNumber}</span>}
   </Box>
   <Box className={styles.inputGroup}>
+    <label className={styles.label}>Căn cước công dân</label>
+    <input
+      type="text"
+      name="accountID"
+      value={formData.accountID}
+      onChange={handleInputChange}
+      className={styles.input}
+      placeholder="0xx xxx xxxx"
+    />
+    {errors.accountID && <span className={styles.error}>{errors.accountID}</span>}
+  </Box>
+  <Box className={styles.inputGroup}>
     <label className={styles.label}>Email</label>
     <input
       type="email"
-      name="email"
-      value={formData.email}
+      name="userName"
+      value={formData.userName}
       onChange={handleInputChange}
       className={styles.input}
       placeholder="abc@gmail.com"
